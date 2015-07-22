@@ -1,0 +1,525 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>java核心技术读书笔记(3) | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="一个简单的java应用程序
+编译源代码之后就会得到包含这个类字节码的文件。
+main方法必须声明为public，而且必须有一个外壳类。
+object.method(parameters) 这等价于函数调用。
+
+注释
+//
+以/*开始，以/结尾。这种注释可以自动生成文档。
+/   / 注意这种注释不能">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="java核心技术读书笔记(3) | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/" title="java核心技术读书笔记(3)" itemprop="url">java核心技术读书笔记(3)</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-07-22T06:47:51.760Z" itemprop="datePublished">2015-07-22</time>
+    更新日期:<time datetime="2015-07-22T06:47:51.760Z" itemprop="dateModified">2015-07-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个简单的java应用程序"><span class="toc-number">1.</span> <span class="toc-text">一个简单的java应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">2.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据类型"><span class="toc-number">3.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量"><span class="toc-number">4.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运算符"><span class="toc-number">5.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输入输出"><span class="toc-number">6.</span> <span class="toc-text">输入输出</span></a></li></ol>
+		</div>
+		
+		<h2 id="一个简单的java应用程序">一个简单的java应用程序</h2><ol>
+<li>编译源代码之后就会得到包含这个类字节码的文件。</li>
+<li>main方法必须声明为public，而且必须有一个外壳类。</li>
+<li>object.method(parameters) 这等价于函数调用。</li>
+</ol>
+<h2 id="注释">注释</h2><ol>
+<li>//</li>
+<li>以/<em>*开始，以</em>/结尾。这种注释可以自动生成文档。</li>
+<li>/<em>   </em>/ 注意这种注释不能嵌套。</li>
+</ol>
+<h2 id="数据类型">数据类型</h2><p>java是一种强类型语言。一共有8种基本数据类型：int（4字节），short（2字节），long（8字节），byte（1字节），float，double，char，boolean。但java有一个能够表示任意精度的算术包—big number。在java中，整型范围与运行java代码的机器无关。java没有任何无符号类型！！！<br>表示溢出和出错情况的三种浮点数值：</p>
+<ol>
+<li>正无穷大 Double.POSITIVE_INFINITY</li>
+<li>负无穷大 Double.NEGATIVE_INFINITY</li>
+<li>NaN(不是一个数字) Double.NaN</li>
+</ol>
+<h2 id="变量">变量</h2><p>声明一个变量之后，必须用赋值语句对变量进行显示初始化，千万不要使用未初始化的变量。在java中，不区分变量的声明与定义。</p>
+<p>关键字final指示常量，关键字static final 指示一个类常量。</p>
+<h2 id="运算符">运算符</h2><p>整数被0除将会产生一个异常那个，而浮点数被0除将会得到无穷大或NaN结果。</p>
+<p>&amp;&amp;和||是按照短路方式求值的。可以避免一些错误发生：<br>x!=0&amp;&amp;1/x&gt;x+y  //no division by 0</p>
+<p>&amp;和|应用于布尔值，得到的结果也是布尔值。</p>
+<p>&lt;&lt;和&gt;&gt;运算符求值简单算法：</p>
+<p>8&lt;&lt;1    8*2^1=16</p>
+<p>8&lt;&lt;n    8*2^n</p>
+<p>8&gt;&gt;1    8/2^1=4</p>
+<p>8&gt;&gt;n    8/2^n  取商  余数不要</p>
+<p>注意：若n为int类型，则要先进行模32处理（n%32) 若n为long类型，则要先进行模64处理(n%64) </p>
+<h2 id="输入输出">输入输出</h2><p>先来看一个简单的例子:</p>
+<pre><code><span class="preprocessor"><span class="keyword">import</span> java.io.Console;</span>
+<span class="preprocessor"><span class="keyword">import</span> java.io.FileReader;</span>
+<span class="preprocessor"><span class="keyword">import</span> java.io.FileWriter;</span>
+<span class="preprocessor"><span class="keyword">import</span> java.io.IOException;</span>
+<span class="preprocessor"><span class="keyword">import</span> java.util.Date;</span>
+<span class="preprocessor"><span class="keyword">import</span> java.util.Scanner;</span>
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws IOException{
+        Scanner <span class="keyword">in</span>=<span class="keyword">new</span> Scanner(System.<span class="keyword">in</span>);
+        System.out.println(<span class="string">"what's your name?"</span>);
+        String name=<span class="keyword">in</span>.next();
+        System.out.println(name);
+    }
+}
+</code></pre><p>想要通过控制台进行输入，首先需要构造一个Scanner对象，并与标准输入流System.in相关联。</p>
+<p>因为输入可见，所以Scanner不适合用于密码输入，这里可以使用Console类来实现。</p>
+<pre><code><span class="keyword">import</span> java.io.Console;
+<span class="keyword">import</span> java.io.FileReader;
+<span class="keyword">import</span> java.io.FileWriter;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.util.Scanner;
+
+public <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>{
+    public static <span class="keyword">void</span> main(<span class="built_in">String</span>[] args) throws IOException{
+        Console con=System.console();
+        <span class="keyword">if</span> (con != <span class="literal">null</span>) { <span class="comment">// 判断是否有控制台的使用权</span>
+             <span class="built_in">String</span> user = <span class="keyword">new</span> <span class="built_in">String</span>(con.readLine(<span class="string">"Enter username:"</span>)); <span class="comment">// 读取整行字符</span>
+             <span class="built_in">String</span> pwd = <span class="keyword">new</span> <span class="built_in">String</span>(con.readPassword(<span class="string">"Enter passowrd:"</span>)); <span class="comment">// 读取密码,输入时不显示</span>
+             con.printf(<span class="string">"Username is: "</span> + user + <span class="string">" "</span>); <span class="comment">// 显示用户名</span>
+             con.printf(<span class="string">"Password is: "</span> + pwd + <span class="string">" "</span>); <span class="comment">// 显示密码</span>
+             } <span class="keyword">else</span> {
+             System.out.println(<span class="string">"Console is unavailable."</span>); <span class="comment">// 提示无控制台使用权限</span>
+            }
+    }
+}
+</code></pre><p>java.io.Console <strong>只能用在标准输入、输出流未被重定向的原始控制台中使用，在 Eclipse 或者其他 IDE 的控制台是用不了的。</strong></p>
+<p>java程序无法获得Console实例是因为JVM不是在命令行中被调用的或者输入输出被重定向了。</p>
+<p>Scanner还可以直接扫描文件。</p>
+<pre><code><span class="keyword">import</span> java.io.Console;
+<span class="keyword">import</span> java.io.FileReader;
+<span class="keyword">import</span> java.io.FileWriter;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public</span> class Test {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) <span class="keyword">throws</span> IOException{
+        <span class="keyword">double</span> sum=<span class="number">0.0</span>;
+        <span class="built_in">int</span> count=<span class="number">0</span>;
+        FileWriter fout=<span class="keyword">new</span> FileWriter(<span class="string">"text.txt"</span>);
+        fout.write(<span class="string">"2 2.2 3 3.3 4 4.5 done"</span>);<span class="comment">//往文件里写入这一字符串</span>
+        fout.close();
+        FileReader fin=<span class="keyword">new</span> FileReader(<span class="string">"text.txt"</span>);
+        Scanner scanner=<span class="keyword">new</span> Scanner(fin);<span class="comment">//注意这里的参数是FileReader类型的fin</span>
+        <span class="keyword">while</span>(scanner.hasNext()){<span class="comment">//如果有内容</span>
+            <span class="keyword">if</span>(scanner.hasNextDouble()){<span class="comment">//如果是数字</span>
+            sum=sum+scanner.nextDouble();
+            count++;
+                }<span class="keyword">else</span>{
+                <span class="keyword">String</span> <span class="built_in">str</span>=scanner.next();
+                <span class="keyword">if</span>(<span class="built_in">str</span>.equals(<span class="string">"done"</span>)){
+                <span class="keyword">break</span>;
+                    }<span class="keyword">else</span>{
+                    System.out.<span class="built_in">println</span>(<span class="string">"文件格式错误!"</span>);
+                    <span class="keyword">return</span>;
+                    }
+            }
+        }
+        fin.close();
+        System.out.<span class="built_in">println</span>(<span class="string">"文件中数据的平均数是:"</span>+sum/count);
+
+    }
+}
+</code></pre><p>结果输出文件中数据的平均数是:3.1666666666666665</p>
+<p>这段程序的功能是将”2 2.2 3 3.3 4 4.5 done”写入文件scanner读取文件中的数直到done结束。并求出数字的平均值，比较有意思的是scanner会自动一空格作为分割符区分不同数字。当然也可以通过scanner.useDelimiter(Pattern pattern)来设置不同的分割符，比如 scanner.useDelimiter(“,*”);</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/" data-title="java核心技术读书笔记(3) | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/07/21/hexo搭建GitHub博客/"  title="hexo搭建GitHub博客">
+ <strong>NEXT:</strong><br/> 
+ <span>hexo搭建GitHub博客
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/" data-title="java核心技术读书笔记(3)" data-url="http://wuyishch.github.io/2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/" data-title="java核心技术读书笔记(3)" data-url="http://wuyishch.github.io/2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个简单的java应用程序"><span class="toc-number">1.</span> <span class="toc-text">一个简单的java应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">2.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据类型"><span class="toc-number">3.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量"><span class="toc-number">4.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运算符"><span class="toc-number">5.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输入输出"><span class="toc-number">6.</span> <span class="toc-text">输入输出</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>

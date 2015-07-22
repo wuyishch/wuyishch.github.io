@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>我的简历</title>
+		<meta name="description" content="">
+		<!-- 页面自动调整到设备宽度，并禁止用户缩放页面-->
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <!-- 忽略将页面中的数字识别为电话号码 -->
+        <meta name="format-detection" content="telephone=no">
+        <!-- 忽略Android平台中对邮箱地址的识别 -->
+        <meta name="format-detection" content="email=no">
+        <!-- 当网站添加到主屏幕快速启动方式，可隐藏地址栏，仅针对ios的safari 
+        	ios7.0版本以后，safari上已看不到效果
+        -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 将网站添加到主屏幕快速启动方式，仅针对ios的safari顶端状态条的样式 -->
+        <!-- 可选default、black、black-translucent -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!-- 去除winphone系统中a、input标签被点击时产生的半透明灰色背景 -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <!-- iOS 设备的桌面图标 -->
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        
+		<!-- 预加载字体包 -->
+		<script src="js/webfontloader.js"></script>
+		<script>
+		  WebFont.load({
+		    custom: {
+		      families: ['FontAwesome']
+		    }
+		  });
+		</script>
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="js/zepto.js"></script>
+		<!-- 包括fx、selector、touch.js -->
+		<script src="js/module.min.js"></script>
+		<script src="js/sonic.js"></script>
+		<script src="js/chart.js"></script>
+		<script src="js/default.js"></script>
+	</head>
+	<body class="wrapper">
+		<div class="loading" id="loading_container">
+			<div class="shadow">
+				<h3>正在载入中</h3>
+				<footer id="loading"></footer>
+			</div>
+		</div>
+		<div class="back">
+		<a href="http://wuyishch.github.io"><img class="back" src="img/back.png"/></a>
+		</div>
+		<menu id="menu" class="menu_container">
+			<section class="dn">
+				<header>
+					<img src="img/avatar.jpg" />
+					<a href="http://wuyishch.github.io"></a>
+				</header>
+				<hr/>
+				<div class="user_info">
+					<label>姓名</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							寿 晨
+						</a>
+					</span>
+					<label>性别</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							男
+						</a>
+					</span>
+					<label>出生日期</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							1993-08-23
+						</a>
+					</span>
+				</div>
+				<div class="user_info">
+					<label>居住地</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							浙江省杭州市
+						</a>
+					</span>
+					<label>本科毕业院校</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							浙江工业大学
+						</a>
+					</span>
+					<label>硕士毕业院校</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							浙江大学
+						</a>
+					</span>
+					
+				</div>
+				<div class="user_info">
+				<label>手机</label>
+					<span>
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							18758258151
+						</a>
+					</span>
+					<label>电子邮箱</label>
+					<span style="width:65%">
+						<a href="javascript:void(0)">
+							<span class="line line-top"></span>
+							<span class="line line-right"></span>
+							<span class="line line-bottom"></span>
+							<span class="line line-left"></span>
+							wuyishch@gmail.com
+						</a>
+					</span>
+				</div>
+			</section>
+			<section class="dn">
+				<table class="user_skill">
+					<thead>
+						<tr>
+							<th></th>
+							<th><h6>初学</h6></th>
+							<th><h6>熟悉</h6></th>
+							<th><h6>掌握</h6></th>
+							<th><h6>擅长</h6></th>
+							<th><h6>精通</h6></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><h5>HTML</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>CSS</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>HTML5</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>CSS3</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>JAVASCRIPT</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>JQUERY</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<section class="dn">
+				<table class="user_skill">
+					<thead>
+						<tr>
+							<th></th>
+							<th><h6>初学</h6></th>
+							<th><h6>熟悉</h6></th>
+							<th><h6>掌握</h6></th>
+							<th><h6>擅长</h6></th>
+							<th><h6>精通</h6></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><h5>PHP</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>.NET</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>MySQL</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+						</tr>
+						<tr>
+							<td><h5>MongoDB</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>Memcache</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h5>JQUERY</h5></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td><i class="fa-star"></i></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<section class="dn">
+				<article class="user_experience">
+					<div class="left">
+						<h5>2014/5--2014/9：PasS</h5>
+						<h6>所属行业：金融/投资/证券</h6>
+						<div class="introduce">懒羊羊是喜羊羊与灰太狼里的正面人物，关于懒羊羊的介绍： 英文名：Lazy Sheep 小名：懒儿、懒懒 释义：懒的羊 性别：男 年岁：6岁 身份：草原三侠之怕 属性：水 星座：巨蟹座 星区：巨蟹一 同理心的一周 血型：A型 象征颜色：橙黄 爱好：睡觉、吃东西 常用道具：抱枕、吊床 缺点：懒，贪吃 贪睡 </div>
+					</div>
+					<div class="right">
+						<canvas id="piechart1"></canvas>
+					</div>
+				</article>
+				<article class="user_experience">
+					<div class="left">
+						<h5>2013/5--2014/9：狼堡实习</h5>
+						<h6>所属行业：酒店/旅游</h6>
+						<div class="introduce">懒羊羊是喜羊羊与灰太狼里的正面人物，关于懒羊羊的介绍： 英文名：Lazy Sheep 小名：懒儿、懒懒 释义：懒的羊 性别：男 年岁：6岁 身份：草原三侠之怕 属性：水 星座：巨蟹座 星区：巨蟹一 同理心的一周 血型：A型 象征颜色：橙黄 爱好：睡觉、吃东西 常用道具：抱枕、吊床 缺点：懒，贪吃 贪睡 </div>
+					</div>
+					<div class="right">
+						<canvas id="piechart2"></canvas>
+					</div>
+				</article>
+			</section>
+		</menu>
+		<nav class="nav_container"  id="nav">
+			<div class="flex">
+				<a href="javascript:void(0)" class="cur"><h5>信息</h5></a>
+				<a href="javascript:void(0)"><h5>前端</h5></a>
+				<a href="javascript:void(0)"><h5>后端</h5></a>
+				<a href="javascript:void(0)"><h5>项目</h5></a>
+			</div>
+			
+		</nav>
+		
+	</body>
+</html>
