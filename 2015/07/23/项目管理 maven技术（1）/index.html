@@ -1,0 +1,656 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>项目管理 maven技术（1） | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="maven 介绍Maven是一个项目管理和综合工具。Maven提供了开发人员构建一个完整的生命周期框架。开发团队可以自动完成项目的基础工具建设，Maven使用标准的目录结构和默认构建生命周期。
+在多个开发团队环境时，Maven可以设置按标准在非常短的时间里完成配置工作。由于大部分项目的设置都很简单，">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="项目管理 maven技术（1） | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/23/项目管理 maven技术（1）/" title="项目管理 maven技术（1）" itemprop="url">项目管理 maven技术（1）</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-07-23T12:41:08.626Z" itemprop="datePublished">2015-07-23</time>
+    更新日期:<time datetime="2015-07-23T12:41:08.626Z" itemprop="dateModified">2015-07-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#maven_介绍"><span class="toc-number">1.</span> <span class="toc-text">maven 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#maven入门"><span class="toc-number">2.</span> <span class="toc-text">maven入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#maven安装"><span class="toc-number">2.1.</span> <span class="toc-text">maven安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地仓库安装"><span class="toc-number">2.2.</span> <span class="toc-text">本地仓库安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新建一个简单的项目"><span class="toc-number">2.3.</span> <span class="toc-text">新建一个简单的项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建代码和测试代码"><span class="toc-number">2.4.</span> <span class="toc-text">创建代码和测试代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行mvn"><span class="toc-number">2.5.</span> <span class="toc-text">运行mvn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maven的生成方式"><span class="toc-number">2.6.</span> <span class="toc-text">maven的生成方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#maven_依赖"><span class="toc-number">3.</span> <span class="toc-text">maven 依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖包的查询"><span class="toc-number">3.1.</span> <span class="toc-text">依赖包的查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖的传递性"><span class="toc-number">3.2.</span> <span class="toc-text">依赖的传递性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖的范围"><span class="toc-number">3.3.</span> <span class="toc-text">依赖的范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#聚合和继承"><span class="toc-number">3.4.</span> <span class="toc-text">聚合和继承</span></a></li></ol></li></ol>
+		</div>
+		
+		<h2 id="maven_介绍">maven 介绍</h2><p>Maven是一个项目管理和综合工具。Maven提供了开发人员构建一个完整的生命周期框架。开发团队可以自动完成项目的基础工具建设，Maven使用标准的目录结构和默认构建生命周期。</p>
+<p>在多个开发团队环境时，Maven可以设置按标准在非常短的时间里完成配置工作。由于大部分项目的设置都很简单，并且可重复使用，Maven让开发人员的工作更轻松，同时创建报表，检查，构建和测试自动化设置。</p>
+<p>Maven提供了开发人员的方式来管理：</p>
+<ul>
+<li>Builds</li>
+</ul>
+<ul>
+<li><p>Documentation</p>
+</li>
+<li><p>Reporting</p>
+</li>
+<li><p>Dependencies</p>
+</li>
+<li><p>SCMs</p>
+</li>
+<li><p>Releases</p>
+</li>
+<li><p>Distribution</p>
+</li>
+<li><p>mailing list</p>
+</li>
+</ul>
+<p>概括地说，Maven简化和标准化项目建设过程。处理编译，分配，文档，团队协作和其他任务的无缝连接。 Maven增加可重用性并负责建立相关的任务。</p>
+<h2 id="maven入门">maven入门</h2><h3 id="maven安装">maven安装</h3><ol>
+<li><p>下载maven版本</p>
+</li>
+<li><p>配置环境变量</p>
+<p>  MAVEN_HOME : D:\apache-maven-3.0.2 </p>
+<p>  MAVEN : %MAVEN_HOME%\bin </p>
+<p>  (可选） MAVEN_OPTS : -Xms256m -Xmx512m </p>
+<p>  在path 前面 加上 %MAVEN%; </p>
+</li>
+</ol>
+<ol>
+<li><p>验证安装是否成功 </p>
+<p> 在命令行上输入 ： mvn -version; 回车，如看到下面信息表示安装成功：</p>
+<p> <img src="http://dl.iteye.com/upload/attachment/410262/fa9ab213-7cba-3960-83e9-c00eb125f835.png" alt=""></p>
+</li>
+</ol>
+<h3 id="本地仓库安装">本地仓库安装</h3><p>修改maven目录下的conf中的setting.xml</p>
+<pre><code><span class="comment">&lt;!-- localRepository
+   | The path to the local repository maven will use to store artifacts.
+   |
+   | Default: ${user.home}/.m2/repository
+  &lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;
+  --&gt;</span>
+<span class="tag">&lt;<span class="title">localRepository</span>&gt;</span>F:/JAVA/maven/repos<span class="tag">&lt;/<span class="title">localRepository</span>&gt;</span>
+</code></pre><p>上面的路径改为你自己本地电脑存放仓库的路径。</p>
+<h3 id="新建一个简单的项目">新建一个简单的项目</h3><p>主要创建文件pom.xml</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cn.zju.shch.user<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>user-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">name</span>&gt;</span>user-core<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
+<span class="tag">&lt;<span class="title">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="title">project.build.sourceEncoding</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">version</span>&gt;</span>4.10<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>hibernate-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>3.6.10.Final<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.2.16<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>5.1.18<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.6.4<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>javassist<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>javassist<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>3.12.1.GA<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+  <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><p>  上面groupId用来表示项目的名称，artifactId表示项目模块的名称，建议用项目名称-模块名称表示，version表示这个项目的版本名称。  </p>
+<h3 id="创建代码和测试代码">创建代码和测试代码</h3><p>源代码应该放置到src/main/java中</p>
+<p>源代码的资源文件应该放置在src/main/resources文件夹中</p>
+<p>测试代码应该放置到src/test/java中</p>
+<p>测试代码的资源文件应该放置在src/test/resources文件夹中</p>
+<p><img src="http://dl.iteye.com/upload/attachment/410288/0f6d36f2-b7b9-360c-82d2-ff6f63924eb4.png" alt=""></p>
+<h3 id="运行mvn">运行mvn</h3><p>mvn clean —&gt;表示运行清理操作（会默认把target文件夹中的数据清理）</p>
+<p>mvn clean compile—&gt;表示先运行清理之后运行编译，会见代码编译到target文件夹中</p>
+<p>mvn clean test—&gt;运行清理和测试</p>
+<p>mvn clean package—&gt;运行清理和打包</p>
+<p>mvn clean install—&gt;运行清理和安装，会将打好的包安装到本地仓库中，以便其他的项目可以调用</p>
+<p>mvn clean deploy—&gt;运行清理和发布（发布到私服上面）</p>
+<h3 id="maven的生成方式">maven的生成方式</h3><p>由于maven有一些固定的生成模式，所以使用</p>
+<p>mvn archetype generate可以自动完成这个骨架的建立</p>
+<p>使用eclipse开发maven项目</p>
+<pre><code>默认<span class="keyword">STS</span>和myeclipse都自带了maven的支持
+
+ 如果是eclipse需要安装m2eclipse
+</code></pre><p><strong><em>注意</em></strong>：eclipse中使用maven插件的时候，运行run as maven build的时候报错</p>
+<blockquote>
+<p>-Dmaven.multiModuleProjectDirectory system propery is not set. Check $M2_HOME environment variable and mvn script match.</p>
+</blockquote>
+<p>可以设一个环境变量M2_HOME指向你的maven安装目录<br>M2_HOME=D:\Apps\apache-maven-3.3.1</p>
+<p>然后在Window-&gt;Preference-&gt;Java-&gt;Installed JREs-&gt;Edit<br>在Default VM arguments中设置</p>
+<p>-Dmaven.multiModuleProjectDirectory=$M2_HOME</p>
+<p><img src="http://dl2.iteye.com/upload/attachment/0106/7993/5d6112ea-7728-3e1b-b203-f73804e76c53.png" alt=""></p>
+<h2 id="maven_依赖">maven 依赖</h2><h3 id="依赖包的查询">依赖包的查询</h3><p>1、所有的依赖都是通过坐标来进行存储的（GAV—&gt;groupId、artifactId、version）</p>
+<p>2、有一些网上的仓库提供了坐标的查询（<a href="http://mvnrepository.com）" target="_blank" rel="external">http://mvnrepository.com）</a></p>
+<p>3、通过<dependencies>设置依赖</dependencies></p>
+<pre><code><span class="variable">&lt;dependency&gt;</span>
+  <span class="variable">&lt;groupId&gt;</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="variable">&lt;/groupId&gt;</span>
+  <span class="variable">&lt;artifactId&gt;</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="variable">&lt;/artifactId&gt;</span>
+  <span class="variable">&lt;version&gt;</span><span class="keyword">*</span><span class="keyword">*</span><span class="variable">&lt;/version&gt;</span>
+  <span class="variable">&lt;scope&gt;</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="variable">&lt;/scope&gt;</span>
+<span class="variable">&lt;/dependency&gt;</span>
+
+<span class="variable">&lt;/dependency&gt;</span>
+<span class="variable">&lt;dependency&gt;</span>
+    <span class="variable">&lt;groupId&gt;</span>org.hibernate<span class="variable">&lt;/groupId&gt;</span>
+    <span class="variable">&lt;artifactId&gt;</span>hibernate-core<span class="variable">&lt;/artifactId&gt;</span>
+    <span class="variable">&lt;version&gt;</span>3.6.10.Final<span class="variable">&lt;/version&gt;</span>
+<span class="variable">&lt;/dependency&gt;</span>
+</code></pre><p>maven是如何搜索依赖的？首先会在本地仓库查询如果本地仓库没有，就去中央仓库查询</p>
+<h3 id="依赖的传递性">依赖的传递性</h3><p>依赖是会被传递</p>
+<p> A—&gt;C  B—&gt;A ==&gt; B—&gt;C（这种依赖是基于compile这个范围进行传递）</p>
+<p>对于依赖的传递而言，主要是针对compile作用域传递</p>
+<p>注意：传递的冲突问题<br>1、a—&gt;b1.0  c—&gt;b1.1  d—&gt;a和c，这个时候在d的pom中，哪一个依赖先写就使用先写依赖的版本<br>如果d—&gt;<d>a</d><d>c</d>—&gt;依赖版本是b1.0</p>
+<p>2、a—&gt;b1.0 c—&gt;b1.1 d—&gt;a和c—&gt;b1.0  f—&gt;d,c,如果路径的长短不一致就选择最小路径 f—&gt;b1.1</p>
+<p>3、如果希望精确的控制依赖包，可以使用依赖的排除功能进行控制</p>
+<h3 id="依赖的范围">依赖的范围</h3><p>1、test范围指的是测试范围有效，在编译和打包时都不会使用这个依赖</p>
+<p>2、compile范围指的是编译范围有效，在编译和打包时都会将依赖存储进去</p>
+<p>3、provided依赖：在编译和测试的过程有效，最后生成war包时不会加入，诸如：servlet-api，因为servlet-api，tomcat等web服务器已经存在了，如果再打包会冲突</p>
+<p>4、runtime在运行的时候依赖，在编译的时候不依赖</p>
+<p>默认的依赖范围是compile</p>
+<h3 id="聚合和继承">聚合和继承</h3><p>聚合：为了能够使用一条命令就能构建 account-email和 account-persist两个模块，我们需要建立一个额外的名为 account-aggregator的模块，然后通过该模块构建整个项目的所有模块。 account-aggregator本身也是个 Maven项目，它的 POM如下</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.juvenxu.mvnbook.account<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>account-aggregator<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span> pom <span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Account Aggregator<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">modules</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">module</span>&gt;</span>account-email<span class="tag">&lt;/<span class="title">module</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">module</span>&gt;</span>account-persist<span class="tag">&lt;/<span class="title">module</span>&gt;</span>
+     <span class="tag">&lt;/<span class="title">modules</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><p>注意：packaging的类型为pom ，module的值是一个以当前POM为主目录的相对路径。</p>
+<p>继承：可声明父POM供子 POM继承</p>
+<p>父模块POM如下：</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.juvenxu.mvnbook.account<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span> account-parent <span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Account Parent<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><p> 子模块声明继承如下：</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+
+    <span class="tag">&lt; <span class="attribute">parent</span> &gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.juvenxu.mvnbook.account<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span> account-parent <span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt; <span class="attribute">relativePath</span> &gt;</span>../account-parent/pom.xml<span class="tag">&lt;/ <span class="attribute">relativePath</span>&gt;</span>
+    <span class="tag">&lt;/ <span class="attribute">parent</span> &gt;</span>
+
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span> account-email <span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Account Email<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+  ...
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><p>最后，同样还需要把 account-parent加入到聚合模块account-aggregator中。聚合的 POM如下：</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.juvenxu.mvnbook.account<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>account-aggregator<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span> pom <span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Account Aggregator<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modules</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">module</span>&gt;</span>account-email<span class="tag">&lt;/<span class="title">module</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">module</span>&gt;</span>account-persist<span class="tag">&lt;/<span class="title">module</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">module</span>&gt;</span> account-parent<span class="tag">&lt;/<span class="title">module</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">modules</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><p>注意：<br>1、子模块没有声明groupId和version, 这两个属性继承至父模块。但如果子模块有不同与父模块的 groupId、version ，也可指定；</p>
+<p>2、不应该继承artifactId,如果groupId ，version，artifactId 完全继承的话会造成坐标冲突；另外即使使用不同的 groupId或version，同样的 artifactId也容易产生混淆。</p>
+<p>3、使用继承后 parent也必须像自模块一样加入到聚合模块中。也就是在在聚合模块的 pom中加入<module>account-parent</module></p>
+<p>聚合与继承的关系：</p>
+<p>区别 ：</p>
+<p>1.对于聚合模块来说，它知道有哪些被聚合的模块，但那些被聚合的模块不知道这个聚合模块的存在。</p>
+<p>2.对于继承关系的父 POM来说，它不知道有哪些子模块继承与它，但那些子模块都必须知道自己的父 POM是什么。</p>
+<p>共同点 ：</p>
+<p>1.聚合 POM与继承关系中的父POM的 packaging都是pom</p>
+<p>2.聚合模块与继承关系中的父模块除了 POM之外都没有实际的内容。</p>
+<p>Maven可继承的POM 元素</p>
+<pre><code>groupId ：项目组 ID ，项目坐标的核心元素；
+version ：项目版本，项目坐标的核心元素；
+<span class="keyword">description</span> ：项目的描述信息；
+organization ：项目的组织信息；
+inceptionYear ：项目的创始年份；
+url ：项目的 url 地址
+develoers ：项目的开发者信息；
+contributors ：项目的贡献者信息；
+distributionManagerment ：项目的部署信息；
+issueManagement ：缺陷跟踪系统信息；
+ciManagement ：项目的持续继承信息；
+scm ：项目的版本控制信息；
+mailingListserv ：项目的邮件列表信息；
+properties ：自定义的 Maven 属性；
+<span class="keyword">dependencies</span> ：项目的依赖配置；
+dependencyManagement ：醒目的依赖管理配置；
+<span class="keyword">repositories</span> ：项目的仓库配置；
+build ：包括项目的源码目录配置、输出目录配置、插件配置、插件管理配置等；
+reporting ：包括项目的报告输出目录配置、报告插件配置等。
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/maven，java/">maven，java</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/项目管理/">项目管理</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2015/07/23/项目管理 maven技术（1）/" data-title="项目管理 maven技术（1） | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/07/22/Java核心技术读书笔记（3）java的基本程序设计结构/"  title="java核心技术读书笔记(3)">
+ <strong>NEXT:</strong><br/> 
+ <span>java核心技术读书笔记(3)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2015/07/23/项目管理 maven技术（1）/" data-title="项目管理 maven技术（1）" data-url="http://wuyishch.github.io/2015/07/23/项目管理 maven技术（1）/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2015/07/23/项目管理 maven技术（1）/" data-title="项目管理 maven技术（1）" data-url="http://wuyishch.github.io/2015/07/23/项目管理 maven技术（1）/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#maven_介绍"><span class="toc-number">1.</span> <span class="toc-text">maven 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#maven入门"><span class="toc-number">2.</span> <span class="toc-text">maven入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#maven安装"><span class="toc-number">2.1.</span> <span class="toc-text">maven安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地仓库安装"><span class="toc-number">2.2.</span> <span class="toc-text">本地仓库安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新建一个简单的项目"><span class="toc-number">2.3.</span> <span class="toc-text">新建一个简单的项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建代码和测试代码"><span class="toc-number">2.4.</span> <span class="toc-text">创建代码和测试代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行mvn"><span class="toc-number">2.5.</span> <span class="toc-text">运行mvn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maven的生成方式"><span class="toc-number">2.6.</span> <span class="toc-text">maven的生成方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#maven_依赖"><span class="toc-number">3.</span> <span class="toc-text">maven 依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖包的查询"><span class="toc-number">3.1.</span> <span class="toc-text">依赖包的查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖的传递性"><span class="toc-number">3.2.</span> <span class="toc-text">依赖的传递性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖的范围"><span class="toc-number">3.3.</span> <span class="toc-text">依赖的范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#聚合和继承"><span class="toc-number">3.4.</span> <span class="toc-text">聚合和继承</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>1</sup></a></li>
+		
+			<li><a href="/categories/项目管理/" title="项目管理">项目管理<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven，java/" title="maven，java">maven，java<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">3</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
