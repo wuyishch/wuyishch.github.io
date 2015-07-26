@@ -86,8 +86,8 @@ user0.0.1-SN">
       <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-07-26T14:34:44.255Z" itemprop="datePublished">2015-07-26</time>
-    更新日期:<time datetime="2015-07-26T14:34:44.255Z" itemprop="dateModified">2015-07-26</time>
+    <time datetime="2015-07-26T14:35:35.375Z" itemprop="datePublished">2015-07-26</time>
+    更新日期:<time datetime="2015-07-26T14:35:35.375Z" itemprop="dateModified">2015-07-26</time>
     
   </p>
 </header>
@@ -105,8 +105,6 @@ user0.0.1-SN">
 <p>小版本号：在分支版本上面进行bug的修复</p>
 <p>里程碑：SNAPSHOT—&gt;alpha—&gt;beta—&gt;release—&gt;GA</p>
 <pre><code><span class="tag">user0</span><span class="class">.0</span><span class="class">.1-SNAPSHOT--</span>&gt;<span class="tag">user0</span><span class="class">.0</span><span class="class">.1-Release---</span>&gt;<span class="tag">user1</span><span class="class">.0</span><span class="class">.0SHAPSHOT</span>  <span class="tag">--</span>&gt;<span class="tag">user1</span><span class="class">.0</span><span class="class">.0-Rlease</span>
-
-
                                        <span class="tag">--</span>&gt;<span class="tag">user0</span><span class="class">.1</span><span class="class">.0-SNAPSHOT--</span>&gt;<span class="tag">user0</span><span class="class">.1</span><span class="class">.0-Rlease</span>
 </code></pre><h2 id="仓库">仓库</h2><p>没有 Maven 时，项目用到的 .jar 文件通常需要拷贝到 /lib 目录，项目多了，拷贝的文件副本就多了，占用磁盘空间，且难于管理。Maven 使用一个称之为仓库的目录，根据构件的坐标统一存储这些构件的唯一副本，在项目中通过依赖声明，可以方便的引用构件。</p>
 <h3 id="仓库的分类">仓库的分类</h3><p>Maven 仓库分为本地仓库和远程仓库，寻找构件时，首先从本地仓库找，找不到则到远程仓库找，再找不到就报错；在远程仓库中找到了，就下载到本地仓库再使用。中央仓库是 Maven 核心自带的远程仓库，默认地址：<a href="http://repo1.maven.org/maven2。" target="_blank" rel="external">http://repo1.maven.org/maven2。</a><br>除了中央仓库，还有其它很多公共的远程仓库。私服(私有仓库)是架设在本机或局域网中的一种特殊的远程仓库，通过私服可以方便的管理其它所有的外部远程仓库。<br><img src="http://7xko05.com1.z0.glb.clouddn.com/私服.jpg" alt=""></p>
