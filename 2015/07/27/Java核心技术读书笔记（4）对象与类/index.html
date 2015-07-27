@@ -1,0 +1,527 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>java核心技术读书笔记(4) | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="面向对象程序设计（OPP）概述在OPP中，不必关心对象的具体实现，只要能满足用户的需求即可。
+传统的结构化程序设计通过设计一系列的过程（即算法）来求解问题—-&amp;gt;算法第一位，数据第二位
+而OPP却调换了这个顺序，将数据放在第一位，然后再考虑操作数据的算法。
+小规模问题—-&amp;gt;分解为过程的开发">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="java核心技术读书笔记(4) | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/27/Java核心技术读书笔记（4）对象与类/" title="java核心技术读书笔记(4)" itemprop="url">java核心技术读书笔记(4)</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-07-27T13:19:50.482Z" itemprop="datePublished">2015-07-27</time>
+    更新日期:<time datetime="2015-07-27T13:19:50.482Z" itemprop="dateModified">2015-07-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象程序设计（OPP）概述"><span class="toc-number">1.</span> <span class="toc-text">面向对象程序设计（OPP）概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类与对象"><span class="toc-number">1.1.</span> <span class="toc-text">类与对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象与对象变量"><span class="toc-number">1.2.</span> <span class="toc-text">对象与对象变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final关键字"><span class="toc-number">2.</span> <span class="toc-text">final关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static_修饰符"><span class="toc-number">3.</span> <span class="toc-text">static 修饰符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java中方法参数的使用情况"><span class="toc-number">4.</span> <span class="toc-text">java中方法参数的使用情况</span></a></li></ol>
+		</div>
+		
+		<h2 id="面向对象程序设计（OPP）概述">面向对象程序设计（OPP）概述</h2><p>在OPP中，不必关心对象的具体实现，只要能满足用户的需求即可。</p>
+<p>传统的结构化程序设计通过设计一系列的过程（即算法）来求解问题—-&gt;算法第一位，数据第二位</p>
+<p>而OPP却调换了这个顺序，将数据放在第一位，然后再考虑操作数据的算法。</p>
+<p>小规模问题—-&gt;分解为过程的开发方式，大规模问题——&gt;面向对象比较合适</p>
+<h3 id="类与对象">类与对象</h3><p>类是构造对象的模板或蓝图。</p>
+<p>对象的三个主要特性：</p>
+<ul>
+<li>对象的行为（可调用的方法）</li>
+<li>对象的状态（描述当前特征的信息，但它并不能完全描述一个对象）</li>
+<li>对象标识（每一个对象都有一个唯一的标识，作为一个类的实例，每个对象的标识永远是不同的）</li>
+</ul>
+<p>类之间的关系</p>
+<ul>
+<li>依赖（“use a”） 一个类的方法操纵另一个类的对象</li>
+<li>聚合（“has a”）（关联） 一个类对象包含另一个类对象</li>
+<li>继承（“is a”）</li>
+</ul>
+<h3 id="对象与对象变量">对象与对象变量</h3><pre><code><span class="built_in">Date</span> deadline;<span class="comment">//deadline doesn't refer to any object</span>
+</code></pre><p>上述语句定义了一个对象变量deadline，它可以引用Date类型的对象。但是，变量deadline不是一个对象，实际上也没有引用对象。此时不能将任何Date方法应用于这个变量。语句</p>
+<pre><code><span class="variable">s=</span>deadline.<span class="built_in">toString</span>();//将产生编译错误
+</code></pre><p>注意：一个对象变量并没有实际包含一个对象，而仅仅引用一个对象。在java中，任何对象变量的值都是对存储在另外一个地方的一个对象的引用。new操作符的返回值也是一个引用。</p>
+<pre><code><span class="built_in">Date</span> birthday;<span class="comment">//java</span>
+相当于
+<span class="built_in">Date</span> *birthday;<span class="comment">//c++</span>
+</code></pre><p>几个名词：更改器方法（对实例域做出修改的方法） ， 访问器方法（仅访问实例域而不进行修改的方法）， 构造器（1. 与类同名，2.每个类可以有一个以上的构造器，3.可以有0个，1个或多个参数，4.没有返回值，5.总伴随着new操作一起调用），隐式参数（出现在方法名前，每个方法中都有隐式参数this），显示参数（位于方法名后面括号中的数值） 域访问器（只返回实例域值的访问器方法）</p>
+<p>注意：不要编写返回引用可变对象的访问器方法。</p>
+<pre><code>class Employee{
+<span class="keyword">private</span> <span class="built_in">Date</span> hireDay;
+<span class="attribute">...</span>
+<span class="keyword">public</span> <span class="built_in">Date</span> getHireDay()
+{
+<span class="keyword">return</span> hireDay;
+}
+<span class="attribute">...</span>
+} 
+</code></pre><p>这样会破坏封装性！</p>
+<pre><code>Employee harry=...<span class="comment">;</span>
+Date d=harry.getHireDay()<span class="comment">;</span>
+double tenYearsInMilliSeconds=<span class="number">10*365.25</span>*<span class="number">24*3600*100</span>0<span class="comment">;</span>
+d.setTime(d.getTime-(long)tenYearsInMilliSeconds)<span class="comment">;</span>
+</code></pre><p>出错的原因：d和harry.hireDay引用同一个对象。对d调用更改器方法就可以自动改变这个雇员对象的私有状态！</p>
+<p>解决方法：对它进行克隆（clone） 修改后代码：</p>
+<pre><code> class Employee{
+<span class="keyword">private</span> <span class="built_in">Date</span> hireDay;
+<span class="attribute">...</span>
+<span class="keyword">public</span> <span class="built_in">Date</span> getHireDay()
+{
+<span class="keyword">return</span> hireDay<span class="built_in">.</span>clone();
+}
+<span class="attribute">...</span>
+} 
+</code></pre><h2 id="final关键字">final关键字</h2><p>final修饰符，可以修饰类，修饰方法，修饰变量</p>
+<p>final修饰的类不能被继承</p>
+<p>final修饰的方法不可以被覆盖</p>
+<p>final修饰的变量是一个常量，只能赋值一次。</p>
+<p>当使用的数据不变时，需要定义阅读性强的名称来表示该数据，并将该数据final化，被final修饰的变量名称规范是：所有字母都大写，如果由多个单词组成，需要通过_进行分隔。</p>
+<h2 id="static_修饰符">static 修饰符</h2><p>用static修饰的方法称为静态方法，静态方法不需要通过类的实例化就可以直接使用。</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">A</span> {
+   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span>(<span class="params"></span>)
+   </span>{
+  System.<span class="keyword">out</span>.println(<span class="string">"静态的打印方法！"</span>);
+   }
+   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print1</span>(<span class="params"></span>)
+   </span>{
+System.<span class="keyword">out</span>.println(<span class="string">"实例方法的打印方法！"</span>);  
+   }
+
+}
+</code></pre><p>特别需要注意的是静态方法不能用abstract修饰，因为静态方法必须在本类中提供实现，而abstract方法是在子类中实现，二者自相矛盾。</p>
+<p>用static修饰的变量称为静态变量<br>在类加载的过程中完成静态变量的内存分配，可以直接通过类名加变量名直接访问该变量。<br>静态变量有点类似于C++中的全局变量。</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">A</span> {
+   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> num=<span class="number">5</span>;
+   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNum</span>(<span class="params"><span class="keyword">int</span> num</span>)
+   </span>{<span class="keyword">this</span>.num=num;}
+   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span>(<span class="params"></span>)
+   </span>{
+System.<span class="keyword">out</span>.println(<span class="string">"num="</span>+num);
+   }
+
+}
+</code></pre><p>static变量的作用是用来在类中不同对象的数据共享</p>
+<p>static代码块</p>
+<p>静态代码块在类加载的时候只执行一次，如果把构造方法看成对象的初始化，则可以把静态代码块看成类的初始化，在代码块中可以初始化类中的静态变量。</p>
+<pre><code>public <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>{
+   public <span class="literal">static</span> <span class="built_in">int</span> <span class="built_in">num</span>;
+   <span class="literal">static</span>
+   {<span class="built_in">num</span>=<span class="number">7</span>;}
+   <span class="annotation">@SuppressWarnings</span>(<span class="string">"static-access"</span>)
+   public <span class="keyword">void</span> setNum(<span class="built_in">int</span> <span class="built_in">num</span>)
+   {<span class="keyword">this</span>.<span class="built_in">num</span>=<span class="built_in">num</span>;}
+   public <span class="literal">static</span> <span class="keyword">void</span> <span class="built_in">print</span>()
+   {
+System.out.println(<span class="string">"num="</span>+<span class="built_in">num</span>);
+   }
+
+}
+</code></pre><p>在静态代码块中完成静态变量num的初始化，此时num值为7<br>静态代码块还可以完成一些其他的初始化。在JDBC（一种连接数据库的技术，用Java实现）的应用中可以经常看到！</p>
+<p>注意：最后需要补充的一点的是实例方法和实例变量都不能在静态方法或者静态代码块中出现，this和super关键字也不能在静态方法和静态代码块中出现，原因是static关键字是用来修饰属于类的变量和方法，而所有和具体对象相关的实例方法，实例变量及与实例相关的关键字（this,super）都不能放入，不然会造成自相矛盾，编译也会报错！</p>
+<p>super和this的用法：</p>
+<p>this代表的是本类对象引用。  this.num</p>
+<p>super代表的是父类的那片空间。 super.num</p>
+<h2 id="java中方法参数的使用情况">java中方法参数的使用情况</h2><ul>
+<li>一个方法不能修改一个基本数据类型的参数（即数值型和布尔型）</li>
+<li>一个方法可以改变一个对象参数的状态</li>
+<li>一个方法不能让对象参数引用一个新的对象</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2015/07/27/Java核心技术读书笔记（4）对象与类/" data-title="java核心技术读书笔记(4) | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/07/26/项目管理 maven技术（2）/"  title="项目管理 maven技术（2）">
+ <strong>NEXT:</strong><br/> 
+ <span>项目管理 maven技术（2）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2015/07/27/Java核心技术读书笔记（4）对象与类/" data-title="java核心技术读书笔记(4)" data-url="http://wuyishch.github.io/2015/07/27/Java核心技术读书笔记（4）对象与类/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2015/07/27/Java核心技术读书笔记（4）对象与类/" data-title="java核心技术读书笔记(4)" data-url="http://wuyishch.github.io/2015/07/27/Java核心技术读书笔记（4）对象与类/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象程序设计（OPP）概述"><span class="toc-number">1.</span> <span class="toc-text">面向对象程序设计（OPP）概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类与对象"><span class="toc-number">1.1.</span> <span class="toc-text">类与对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象与对象变量"><span class="toc-number">1.2.</span> <span class="toc-text">对象与对象变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final关键字"><span class="toc-number">2.</span> <span class="toc-text">final关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static_修饰符"><span class="toc-number">3.</span> <span class="toc-text">static 修饰符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java中方法参数的使用情况"><span class="toc-number">4.</span> <span class="toc-text">java中方法参数的使用情况</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>2</sup></a></li>
+		
+			<li><a href="/categories/项目管理/" title="项目管理">项目管理<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>2</sup></a></li>
+		
+			<li><a href="/tags/maven，java/" title="maven，java">maven，java<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
