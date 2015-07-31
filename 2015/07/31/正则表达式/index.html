@@ -1,0 +1,602 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>正则表达式 | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="什么是正则表达式编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要。正则表达式就是用于描述这些规则的工具。换句话说，正则表达式就是记录文本规则的代码。
+基础表达式
+.所有字符
+\d:所有数字
+\D:所有非数字
+\s:空白字符
+\S:非空白字符
+\w:[a-zA-Z_0-9]
+\">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="正则表达式 | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/31/正则表达式/" title="正则表达式" itemprop="url">正则表达式</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-07-31T13:10:39.375Z" itemprop="datePublished">2015-07-31</time>
+    更新日期:<time datetime="2015-07-31T13:10:39.375Z" itemprop="dateModified">2015-07-31</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是正则表达式"><span class="toc-number">1.</span> <span class="toc-text">什么是正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础表达式"><span class="toc-number">1.1.</span> <span class="toc-text">基础表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#*_?_+_的使用"><span class="toc-number">1.2.</span> <span class="toc-text">*   ?  +  的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#范围匹配"><span class="toc-number">1.3.</span> <span class="toc-text">范围匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两个重要的类Pattern和Matcher"><span class="toc-number">1.4.</span> <span class="toc-text">两个重要的类Pattern和Matcher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">1.5.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分组和查找"><span class="toc-number">1.6.</span> <span class="toc-text">分组和查找</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#贪婪和非贪婪模式"><span class="toc-number">1.6.1.</span> <span class="toc-text">贪婪和非贪婪模式</span></a></li></ol></li></ol></li></ol>
+		</div>
+		
+		<h2 id="什么是正则表达式">什么是正则表达式</h2><p>编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要。正则表达式就是用于描述这些规则的工具。换句话说，正则表达式就是记录文本规则的代码。</p>
+<h3 id="基础表达式">基础表达式</h3><ul>
+<li>.所有字符</li>
+<li>\d:所有数字</li>
+<li>\D:所有非数字</li>
+<li>\s:空白字符</li>
+<li>\S:非空白字符</li>
+<li>\w:[a-zA-Z_0-9]</li>
+<li><p>\W:非\w</p>
+<pre><code><span class="comment">//.表示任意字符</span>
+System.out.println<span class="params">(<span class="string">"a"</span>.matches<span class="params">(<span class="string">"."</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"aa"</span>.matches<span class="params">(<span class="string">".a"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"\\d"</span>)</span>;
+<span class="comment">//\\d表示是否是数字</span>
+System.out.println<span class="params">(<span class="string">"123"</span>.matches<span class="params">(<span class="string">"\\d\\d\\d"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"1d32e"</span>.matches<span class="params">(<span class="string">"\\d\\D\\d\\d\\D"</span>)</span>)</span>;
+<span class="comment">//\\s表示是否是空白字符</span>
+System.out.println<span class="params">(<span class="string">"1  2        d"</span>.matches<span class="params">(<span class="string">"\\d\\s\\s\\d\\s\\sd"</span>)</span>)</span>;
+<span class="comment">//\\w表示常用输入字符:a-z,A-Z,0-9,_</span>
+System.out.println<span class="params">(<span class="string">"aa b1 22"</span>.matches<span class="params">(<span class="string">"\\w\\w\\s\\w\\w\\s\\w\\w"</span>)</span>)</span>;
+<span class="comment">//[abcd]表示是否是abcd这是个字符中的某一个</span>
+System.out.println<span class="params">(<span class="string">"a"</span>.matches<span class="params">(<span class="string">"[abcd]"</span>)</span>)</span>;
+<span class="comment">//[a-z]表示是否是a-z之间的字符</span>
+System.out.println<span class="params">(<span class="string">"D"</span>.matches<span class="params">(<span class="string">"[a-zA-D]"</span>)</span>)</span>;
+<span class="comment">//[^a-z]表示不在a-z之间</span>
+System.out.println<span class="params">(<span class="string">"h"</span>.matches<span class="params">(<span class="string">"[^a-z]"</span>)</span>)</span>;
+<span class="comment">//也支持&amp;&amp;和||</span>
+System.out.println<span class="params">(<span class="string">"a"</span>.matches<span class="params">(<span class="string">"[a-z&amp;&amp;[def]]"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"H"</span>.matches<span class="params">(<span class="string">"[a-z]||[A-D]"</span>)</span>)</span>;
+</code></pre></li>
+</ul>
+<h3 id="*_?_+_的使用">*   ?  +  的使用</h3><ul>
+<li><p>X?  X,表示0个或1个</p>
+<pre><code><span class="comment">//?表示0个或者1个</span>
+System.out.println<span class="params">(<span class="string">"a"</span>.matches<span class="params">(<span class="string">"a?"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"aa"</span>.matches<span class="params">(<span class="string">"a?"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">""</span>.matches<span class="params">(<span class="string">"a?"</span>)</span>)</span>;
+</code></pre></li>
+<li><p>X*   X, 表示0个或多个</p>
+<pre><code>System.out.println<span class="params">(<span class="string">"aaaa"</span>.matches<span class="params">(<span class="string">"a*"</span>)</span>)</span>;
+<span class="comment">//为false因为*表示的多个</span>
+System.out.println<span class="params">(<span class="string">"abcd"</span>.matches<span class="params">(<span class="string">"a*"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"abcdlskdjff"</span>.matches<span class="params">(<span class="string">"a[a-z]*"</span>)</span>)</span>;
+<span class="comment">//为true</span>
+System.out.println<span class="params">(<span class="string">""</span>.matches<span class="params">(<span class="string">"a*"</span>)</span>)</span>;
+</code></pre></li>
+<li><p>X+   X,表示1个或多个</p>
+<pre><code><span class="comment">//+表示1个或者多个</span>
+System.out.println<span class="params">(<span class="string">"aa"</span>.matches<span class="params">(<span class="string">"a+"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"a"</span>.matches<span class="params">(<span class="string">"a+"</span>)</span>)</span>;
+<span class="comment">//false，+表示一个或者多个</span>
+System.out.println<span class="params">(<span class="string">""</span>.matches<span class="params">(<span class="string">"a+"</span>)</span>)</span>;
+</code></pre></li>
+</ul>
+<h3 id="范围匹配">范围匹配</h3><ul>
+<li><p>X{n}   X, 表示出现n次</p>
+<pre><code>System.out.println<span class="params">(<span class="string">"26666"</span>.matches<span class="params">(<span class="string">"\\d{5}"</span>)</span>)</span>;
+</code></pre></li>
+<li><p>X{n,}  X, 表示至少出现n次</p>
+<pre><code>System.out.println<span class="params">(<span class="string">"2666645333"</span>.matches<span class="params">(<span class="string">"\\d{5，}"</span>)</span>)</span>;
+</code></pre></li>
+<li><p>X{n,m} X, 表示至少出现n次最多出现m次</p>
+<pre><code><span class="comment">//{n,m}表示至少出现n次最多出现m次</span>
+System.out.println<span class="params">(<span class="string">"2kk3-12-22"</span>.matches<span class="params">(<span class="string">"\\d{4}-\\d{1,2}-\\d{1,2}"</span>)</span>)</span>;
+</code></pre></li>
+<li><p>[abc]  a, b, or c (simple class)</p>
+</li>
+</ul>
+<p>几个常用的例子：</p>
+<pre><code><span class="comment">//第一个:检测一个字符串是否是数字</span>
+System.out.println<span class="params">(<span class="string">"2334.99"</span>.matches<span class="params">(<span class="string">"\\d+\\.?\\d+"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"38"</span>.matches<span class="params">(<span class="string">"\\d{1}||[12]{1}\\d{1}|3{1}[0-5]{1}"</span>)</span>)</span>;
+<span class="comment">//第二个:检测一个字符串是否是一个电话号码0870-2233445-01</span>
+System.out.println<span class="params">(<span class="string">"0870-2233445-01"</span>.matches<span class="params">(<span class="string">"\\d{3,4}-\\d{7}-\\d{2,5}"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"0870-2233445"</span>.matches<span class="params">(<span class="string">"\\d{3,4}-\\d{7}-*\\d*"</span>)</span>)</span>;
+<span class="comment">//第三个:匹配一个IP地址 111.22.33.22</span>
+System.out.println<span class="params">(<span class="string">"192.168.0.33"</span>.matches<span class="params">(<span class="string">"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"92"</span>.matches<span class="params">(<span class="string">"[1-2]?\\d{0,2}"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"192.234.22.33"</span>.matches<span class="params">(<span class="string">"[1-2]?\\d{0,2}\\.[1-2]?\\d{0,2}\\.[1-2]?\\d{0,2}\\.[1-2]?\\d{0,2}"</span>)</span>)</span>;
+<span class="comment">//第四：匹配一个身份证号</span>
+System.out.println<span class="params">(<span class="string">"53210119761209005X"</span>.matches<span class="params">(<span class="string">"\\d{15}||\\d{18}||\\d{17}[X]"</span>)</span>)</span>;
+<span class="comment">//匹配一个电子邮件</span>
+System.out.println<span class="params">(<span class="string">"ynkonghao@gmail-pun.com.ddfdfdf"</span>.matches<span class="params">(<span class="string">"[\\w-\\.]*\\w+@[\\w\\.-]*\\w+\\.\\w{2,6}"</span>)</span>)</span>;
+</code></pre><p>^这个元字符有两个用法：</p>
+<ol>
+<li>^不在[]中就表示以xx为开头</li>
+<li>在[]中就表示非</li>
+</ol>
+<p>$表示以xx为结尾</p>
+<p>^和$的结合用法：比如一个网站如果要求你填写的QQ号必须为5位到12位数字时，可以使用：^\d{5,12}$。</p>
+<h3 id="两个重要的类Pattern和Matcher">两个重要的类Pattern和Matcher</h3><p>可以先将一个正则表达式编译成为一个Pattern对象，可以提高效率。通过Pattern可以获取一个Matcher对象，通过Matcher对象可以获取大量的有用信息。</p>
+<pre><code><span class="built_in">Pattern</span> p = <span class="built_in">Pattern</span>.compile(<span class="string">"\\d{4}"</span>);
+Matcher m = p.matcher(<span class="string">"23338888-3233-1111"</span>);
+</code></pre><p>下面介绍一些常用的Matcher的方法：</p>
+<p>判断是否匹配：m.matches()，返回一个boolean类型的返回值</p>
+<p>将查找的指针重置：m.reset()</p>
+<p>顺序匹配相应的字符串：m.find()，返回一个boolean类型的返回值</p>
+<p>每进行一次find，就可以将字符串通过group获取：m.group()，返回获取到的字符串</p>
+<p>注意：必须在find之后才能执行group，不然会报错！</p>
+<p>m.start()和m.end()可以获取匹配字符串的开始位置和结束位置</p>
+<pre><code><span class="keyword">while</span>(<span class="keyword">m</span>.find()) {
+        System.<span class="keyword">out</span>.println(<span class="keyword">m</span>.<span class="literal">group</span>()+<span class="string">"["</span>+<span class="keyword">m</span>.start()+<span class="string">","</span>+<span class="keyword">m</span>.end()+<span class="string">"]"</span>);
+    }
+</code></pre><h3 id="替换">替换</h3><pre><code>String <span class="built_in">str</span> = <span class="string">"234445sdsff3444sdss"</span>;
+<span class="comment">//第一个参数是正则表达式，第二参数是要替换的值</span>
+System.out.println<span class="params">(str.replaceAll<span class="params">(<span class="string">"\\d"</span>, <span class="string">"*"</span>)</span>)</span>;
+System.out.println<span class="params">(str.replaceAll<span class="params">(<span class="string">"\\d+"</span>, <span class="string">"*"</span>)</span>)</span>;
+System.out.println<span class="params">(<span class="string">"13222331111"</span>.replaceAll<span class="params">(<span class="string">"\\d{4}$"</span>, <span class="string">"****"</span>)</span>)</span>;
+</code></pre><p>“\d{4}$”指的是替换后四位！</p>
+<h3 id="分组和查找">分组和查找</h3><p>使用小括号指定一个子表达式后，匹配这个子表达式的文本(也就是此分组捕获的内容)可以在表达式或其它程序中作进一步的处理。默认情况下，每个分组会自动拥有一个组号，规则是：从左向右，以分组的左括号为标志，第一个出现的分组的组号为1，第二个为2，以此类推。</p>
+<ul>
+<li>分组0对应整个正则表达式</li>
+<li>实际上组号分配过程是要从左向右扫描两遍的：第一遍只给未命名组分配，第二遍只给命名组分配－－因此所有命名组的组号都大于未命名的组号</li>
+<li><p>你可以使用(?:exp)这样的语法来剥夺一个分组对组号分配的参与权．</p>
+<pre><code>String str = <span class="string">"532101197612210039,532122199802120034,534501198212110029,532101780203009"</span>;
+<span class="comment">//使用括号进行分组</span>
+Pattern p = Pattern.compile(<span class="string">"((\\d{6})(\\d{8}))\\d{4}"</span>);
+Matcher <span class="keyword">m</span> = p.matcher(str);
+<span class="keyword">while</span>(<span class="keyword">m</span>.find()) {
+    System.<span class="keyword">out</span>.println(<span class="keyword">m</span>.<span class="literal">group</span>());
+    System.<span class="keyword">out</span>.println(<span class="string">"生源地:"</span>+<span class="keyword">m</span>.<span class="literal">group</span>(2)+<span class="string">"出生日期:"</span>+<span class="keyword">m</span>.<span class="literal">group</span>(3));
+}
+</code></pre></li>
+</ul>
+<h4 id="贪婪和非贪婪模式">贪婪和非贪婪模式</h4><p>贪婪模式：指的是.*会匹配所有的信息，此处会找整个信息。</p>
+<pre><code>String <span class="keyword">h</span> = <span class="string">"&lt;table&gt;&lt;td&gt;你好&lt;/td&gt;&lt;td&gt;大家好&lt;/td&gt;&lt;td&gt;每个人都好&lt;/td&gt;&lt;/table&gt;"</span>;
+p = Pattern.compile(<span class="string">"&lt;td&gt;(.*)&lt;/td&gt;"</span>);
+<span class="keyword">m</span> = p.matcher(<span class="keyword">h</span>);
+<span class="keyword">while</span>(<span class="keyword">m</span>.find()) {
+    System.<span class="keyword">out</span>.println(<span class="keyword">m</span>.<span class="literal">group</span>(1));
+    System.<span class="keyword">out</span>.println(<span class="keyword">m</span>.start()+<span class="string">","</span>+<span class="keyword">m</span>.end());
+}
+</code></pre><p>找到的结果:</p>
+<pre><code>你好<span class="tag">&lt;/<span class="title">td</span>&gt;</span><span class="tag">&lt;<span class="title">td</span>&gt;</span>大家好<span class="tag">&lt;/<span class="title">td</span>&gt;</span><span class="tag">&lt;<span class="title">td</span>&gt;</span>每个人都好
+7,44
+</code></pre><p>非贪婪模式:仅仅只是匹配第一个结尾,特别注意:？接在*+之后就表示使用了非贪婪模式.</p>
+<pre><code>String <span class="keyword">h</span> = <span class="string">"&lt;table&gt;&lt;td&gt;你好&lt;/td&gt;&lt;td&gt;大家好&lt;/td&gt;&lt;td&gt;每个人都好&lt;/td&gt;&lt;/table&gt;"</span>;
+p = Pattern.compile(<span class="string">"&lt;td&gt;(.*?)&lt;/td&gt;"</span>);
+<span class="keyword">m</span> = p.matcher(<span class="keyword">h</span>);
+<span class="keyword">while</span>(<span class="keyword">m</span>.find()) {
+    System.<span class="keyword">out</span>.println(<span class="keyword">m</span>.<span class="literal">group</span>(1));
+    System.<span class="keyword">out</span>.println(<span class="keyword">m</span>.start()+<span class="string">","</span>+<span class="keyword">m</span>.end());
+}
+</code></pre><p>找到的结果：        </p>
+<pre><code>你好
+7,18
+大家好
+18,30
+每个人都好
+30,44
+</code></pre><p>接下去会写一点网络爬虫的内容，也算是正则表达式的应用吧。</p>
+<p>获取邮箱：</p>
+<pre><code>    public <span class="literal">static</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; getEmail(<span class="built_in">String</span> str) {
+    <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; es = <span class="keyword">new</span> ArrayList&lt;<span class="built_in">String</span>&gt;();
+    <span class="built_in">Pattern</span> p = <span class="built_in">Pattern</span>.compile(<span class="string">"[\\w\\.-]*\\w+@[\\w\\.-]*\\w+\\.\\w{2,5}"</span>);
+    Matcher m = p.matcher(str);
+    <span class="keyword">while</span>(m.find()) {
+        es.add(m.group());
+    }
+    <span class="keyword">return</span> es;
+}
+</code></pre><p>获取URL：</p>
+<pre><code>public <span class="literal">static</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; getUrl(<span class="built_in">String</span> str) {
+    <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; es = <span class="keyword">new</span> ArrayList&lt;<span class="built_in">String</span>&gt;();
+    <span class="built_in">Pattern</span> p = <span class="built_in">Pattern</span>.compile(<span class="string">"&lt;a.*?\\s+href=['\"]([^\"'&gt;]*?)['\"].*?&gt;(.*?)&lt;/a&gt;"</span>);
+    Matcher m = p.matcher(str);
+    <span class="keyword">while</span>(m.find()) {
+        es.add(m.group(<span class="number">1</span>));
+    }
+    <span class="keyword">return</span> es;
+</code></pre><p>附录：（来自于网络  <a href="http://www.jb51.net/tools/zhengze.html" target="_blank" rel="external">正则表达式30分钟入门教程</a>）</p>
+   <table cellspacing="0"><br>        <caption>表1.常用的元字符</caption><br>        <thead><br>            <tr><br>                <th scope="col">代码</th><br><br>                <th scope="col">说明</th><br>            </tr><br>        </thead><br>        <tbody><br>            <tr><br>                <td><span class="code">.</span></td><br>                <td><span class="desc">匹配除换行符以外的任意字符</span></td><br><br>            </tr><br>            <tr><br>                <td><span class="code">\w</span></td><br>                <td><span class="desc">匹配字母或数字或下划线或汉字</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">\s</span></td><br><br>                <td><span class="desc">匹配任意的空白符</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">\d</span></td><br>                <td><span class="desc">匹配数字</span></td><br>            </tr><br>            <tr><br><br>                <td><span class="code">\b</span></td><br>                <td><span class="desc">匹配单词的开始或结束</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">^</span></td><br>                <td><span class="desc">匹配字符串的开始</span></td><br>            </tr><br><br>            <tr><br>                <td><span class="code">$</span></td><br>                <td><span class="desc">匹配字符串的结束</span></td><br>            </tr><br>        </tbody><br>    </table>
+
+<table cellspacing="0"><br>        <caption>表2.常用的限定符</caption><br>        <thead><br>            <tr><br>                <th scope="col">代码/语法</th><br>                <th scope="col">说明</th><br>            </tr><br><br>        </thead><br>        <tbody><br>            <tr><br>                <td><span class="code">*</span></td><br>                <td><span class="desc">重复零次或更多次</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">+</span></td><br><br>                <td><span class="desc">重复一次或更多次</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">?</span></td><br>                <td><span class="desc">重复零次或一次</span></td><br>            </tr><br>            <tr><br><br>                <td><span class="code">{n}</span></td><br>                <td><span class="desc">重复n次</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">{n,}</span></td><br>                <td><span class="desc">重复n次或更多次</span></td><br>            </tr><br><br>            <tr><br>                <td><span class="code">{n,m}</span></td><br>                <td><span class="desc">重复n到m次</span></td><br>            </tr><br>        </tbody><br>    </table><br><table cellspacing="0"><br>        <caption>表3.常用的反义代码</caption><br>        <thead><br>            <tr><br>                <th scope="col">代码/语法</th><br><br>                <th scope="col">说明</th><br>            </tr><br>        </thead><br>        <tbody><br>            <tr><br>                <td><span class="code">\W</span></td><br>                <td><span class="desc">匹配任意不是字母，数字，下划线，汉字的字符</span></td><br><br>            </tr><br>            <tr><br>                <td><span class="code">\S</span></td><br>                <td><span class="desc">匹配任意不是空白符的字符</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">\D</span></td><br><br>                <td><span class="desc">匹配任意非数字的字符</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">\B</span></td><br>                <td><span class="desc">匹配不是单词开头或结束的位置</span></td><br>            </tr><br>            <tr><br><br>                <td><span class="code">[^x]</span></td><br>                <td><span class="desc">匹配除了x以外的任意字符</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">[^aeiou]</span></td><br>                <td><span class="desc">匹配除了aeiou这几个字母以外的任意字符</span></td><br>            </tr><br><br>        </tbody><br>    </table><br>   <table cellspacing="0"><br>        <caption>表4.常用分组语法</caption><br>        <tbody><br>            <tr><br>                <th scope="col">分类</th><br>                <th scope="col">代码/语法</th><br><br>                <th scope="col">说明</th><br>            </tr><br>            <tr><br>                <th rowspan="3">捕获</th><br>                <td><span class="code">(exp)</span></td><br>                <td><span class="desc">匹配exp,并捕获文本到自动命名的组里</span></td><br>            </tr><br><br>            <tr><br>                <td><span class="code">(?&lt;name&gt;exp)</span></td><br>                <td><span class="desc">匹配exp,并捕获文本到名称为name的组里，也可以写成(?’name’exp)</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">(?:exp)</span></td><br><br>                <td><span class="desc">匹配exp,不捕获匹配的文本，也不给此分组分配组号</span></td><br>            </tr><br>            <tr><br>                <th rowspan="4">零宽断言</th><br>                <td><span class="code">(?=exp)</span></td><br>                <td><span class="desc">匹配exp前面的位置</span></td><br>            </tr><br><br>            <tr><br>                <td><span class="code">(?&lt;=exp)</span></td><br>                <td><span class="desc">匹配exp后面的位置</span></td><br>            </tr><br>            <tr><br>                <td><span class="code">(?!exp)</span></td><br>                <td><span class="desc">匹配后面跟的不是exp的位置</span></td><br><br>            </tr><br>            <tr><br>                <td><span class="code">(?&lt;!exp)</span></td><br>                <td><span class="desc">匹配前面不是exp的位置</span></td><br>            </tr><br>            <tr><br>                <th rowspan="1">注释</th><br><br>                <td><span class="code">(?#comment)</span></td><br>                <td><span class="desc">这种类型的分组不对正则表达式的处理产生任何影响，用于提供注释让人阅读</span></td><br>            </tr><br>        </tbody><br>    </table>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java，正则表达式/">java，正则表达式</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2015/07/31/正则表达式/" data-title="正则表达式 | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/07/27/Java核心技术读书笔记（4）对象与类/"  title="java核心技术读书笔记(4)">
+ <strong>NEXT:</strong><br/> 
+ <span>java核心技术读书笔记(4)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2015/07/31/正则表达式/" data-title="正则表达式" data-url="http://wuyishch.github.io/2015/07/31/正则表达式/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2015/07/31/正则表达式/" data-title="正则表达式" data-url="http://wuyishch.github.io/2015/07/31/正则表达式/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是正则表达式"><span class="toc-number">1.</span> <span class="toc-text">什么是正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础表达式"><span class="toc-number">1.1.</span> <span class="toc-text">基础表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#*_?_+_的使用"><span class="toc-number">1.2.</span> <span class="toc-text">*   ?  +  的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#范围匹配"><span class="toc-number">1.3.</span> <span class="toc-text">范围匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两个重要的类Pattern和Matcher"><span class="toc-number">1.4.</span> <span class="toc-text">两个重要的类Pattern和Matcher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">1.5.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分组和查找"><span class="toc-number">1.6.</span> <span class="toc-text">分组和查找</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#贪婪和非贪婪模式"><span class="toc-number">1.6.1.</span> <span class="toc-text">贪婪和非贪婪模式</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/项目管理/" title="项目管理">项目管理<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>2</sup></a></li>
+		
+			<li><a href="/tags/java，正则表达式/" title="java，正则表达式">java，正则表达式<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven，java/" title="maven，java">maven，java<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">6</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
