@@ -1,0 +1,518 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Go语言基础入门（1） | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="因为项目的需要，近几天学习了一下Go语言，作为一个已经学习过Java的初学者来说，刚开始是不太习惯Go语言的语法习惯，但是接触几天下来也就习惯了。下面是这几天学习的一些基础知识吧。
+什么是Go语言Go 是一个开源的编程语言，它能让构造简单、可靠且高效的软件变得容易。Go 语言被设计成一门应用于搭载 ">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="Go语言基础入门（1） | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/06/Go语言基础入门（1）/" title="Go语言基础入门（1）" itemprop="url">Go语言基础入门（1）</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-08-06T13:59:54.201Z" itemprop="datePublished">2015-08-06</time>
+    更新日期:<time datetime="2015-08-06T13:59:26.004Z" itemprop="dateModified">2015-08-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Go语言"><span class="toc-number">1.</span> <span class="toc-text">什么是Go语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建Go语言开发环境（Sublime_Text2+GoSublime+Gocode(自动代码提示)）"><span class="toc-number">2.</span> <span class="toc-text">搭建Go语言开发环境（Sublime Text2+GoSublime+Gocode(自动代码提示)）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Go"><span class="toc-number">2.1.</span> <span class="toc-text">安装Go</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Sublime_Text_2配置GoSublime/GoGDB"><span class="toc-number">2.2.</span> <span class="toc-text">安装Sublime Text 2配置GoSublime/GoGDB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装gocode，提供代码补全功能"><span class="toc-number">2.3.</span> <span class="toc-text">安装gocode，提供代码补全功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go语言基础"><span class="toc-number">3.</span> <span class="toc-text">Go语言基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello_Go——-初识Go语言"><span class="toc-number">3.1.</span> <span class="toc-text">Hello Go——-初识Go语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go的基本数据类型与声明"><span class="toc-number">3.2.</span> <span class="toc-text">Go的基本数据类型与声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#循环"><span class="toc-number">3.3.</span> <span class="toc-text">循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组Array"><span class="toc-number">3.4.</span> <span class="toc-text">数组Array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#切片Slice_并不是数组，指向低层数组"><span class="toc-number">3.5.</span> <span class="toc-text">切片Slice 并不是数组，指向低层数组</span></a></li></ol></li></ol>
+		</div>
+		
+		<p>因为项目的需要，近几天学习了一下Go语言，作为一个已经学习过Java的初学者来说，刚开始是不太习惯Go语言的语法习惯，但是接触几天下来也就习惯了。下面是这几天学习的一些基础知识吧。</p>
+<h2 id="什么是Go语言">什么是Go语言</h2><p>Go 是一个开源的编程语言，它能让构造简单、可靠且高效的软件变得容易。Go 语言被设计成一门应用于搭载 Web 服务器，存储集群或类似用途的巨型中央服务器的系统编程语言。</p>
+<p>对于高性能分布式系统领域而言，Go 语言无疑比大多数其它语言有着更高的开发效率。它提供了海量并行的支持，这对于游戏服务端的开发而言是再好不过了。</p>
+<p>罗伯特·格瑞史莫（Robert Griesemer），罗勃·派克（Rob Pike）及肯·汤普逊于2007年9月开始设计Go语言，Go语言是基于Inferno操作系统所开发的。Go语言于2009年11月正式宣布推出，并在Linux及Mac OS X平台上进行了实现.</p>
+<h2 id="搭建Go语言开发环境（Sublime_Text2+GoSublime+Gocode(自动代码提示)）">搭建Go语言开发环境（Sublime Text2+GoSublime+Gocode(自动代码提示)）</h2><h3 id="安装Go">安装Go</h3><p>下载你需要的 <a href="http://www.golangtc.com/download" target="_blank" rel="external">golang版本</a></p>
+<p>配置golang环境变量</p>
+<p>系统变量名：<br>GOROOT值：Go的安装位置</p>
+<p>系统变量名：Path追加值：;%GOROOT%\bin  </p>
+<p><strong><em>注意：千万不要在安装路径中出现中文。否则之后将无法正常使用Go语言开发工具</em></strong></p>
+<p>配置GOPATH：Go工程所在的文件夹</p>
+<p><strong><em>值得注意：GOPATH是golang项目的特殊路径，其路径下必须包含bin、pkg、src这3个目录。golang项目的是依靠src目录来组织源代码的。</em></strong>
+　</p>
+<p>安装完毕后当然要验证一下Go是否已经正确安装了：打开Windows中的命令提示符（cmd.exe）执行命令：go version</p>
+<h3 id="安装Sublime_Text_2配置GoSublime/GoGDB">安装Sublime Text 2配置GoSublime/GoGDB</h3><p>下载<a href="http://www.sublimetext.com/" target="_blank" rel="external">ST2</a>安装后打开它如图所示：</p>
+<p><img src="http://7xko05.com1.z0.glb.clouddn.com/ST2.jpg" alt=""></p>
+<p>点击View – Show Console或按Ctrl+`(这个键就是Tab键的上一个)弹出控制台 输入如下文本按回车然后重启ST2：</p>
+<pre><code><span class="built_in">import</span> urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path<span class="params">()</span>; os.makedirs<span class="params">(ipp)</span> <span class="keyword">if</span> not os.path.exists<span class="params">(ipp)</span> <span class="keyword">else</span> None; urllib2.install_opener<span class="params">(urllib2.build_opener<span class="params">(urllib2.ProxyHandler<span class="params">()</span>)</span>)</span>; open<span class="params">(os.path.join<span class="params">(ipp,pf)</span>,'wb')</span>.write<span class="params">(urllib2.urlopen<span class="params">('http://sublime.wbond.net/'+pf.replace<span class="params">(' ','%<span class="number">20</span>')</span>)</span>.read<span class="params">()</span>)</span>; print 'Please restart Sublime Text to finish installation'
+</code></pre><p>　　<br>重启之后，preferences菜单下会出现一个Pakage control，按下Ctrl+Shift+P后会弹出的一个可以输入命令的文本框<br><img src="http://7xko05.com1.z0.glb.clouddn.com/st22.png" alt="">　</p>
+<p>然后输入install，稍等片刻就会再出现一个文本框，此时输入gosublime按回车就可以安装插件了。同理把GoGDB安装好。</p>
+<h3 id="安装gocode，提供代码补全功能">安装gocode，提供代码补全功能</h3><p>打开cmd，输入go get github.com/nsf/gocode按回车后等待片刻后，打开%GOPATH%\bin这个路径应该能看到gocode.exe这个文件，如果没看到则执行go install github.com/nsf/gocode试试。 </p>
+<p>然后将gocode.exe剪切到%GOROOT%\bin下面，此前我们已将%GOROOT%\bin添加到Path环境变量当中，这样个拷贝动作可以确保gocode.exe在Path环境变量下。 这里你也可以直接下载<a href="http://download.csdn.net/detail/u012565107/7147335" target="_blank" rel="external">Gocode.exe</a>
+　　</p>
+<p>准备好gocode后可以配置ST2的GoSublime插件了！点击Preferences &gt; Package Settings &gt; GoSublime &gt; Settings – Default设置env的值为go的安装路径下的bin文件夹</p>
+<p><img src="http://7xko05.com1.z0.glb.clouddn.com/QQ截图20150806205920.png" alt=""> </p>
+<h2 id="Go语言基础">Go语言基础</h2><p>Go语言采用UTF-8编码，所以不存在乱码问题。</p>
+<h3 id="Hello_Go——-初识Go语言">Hello Go——-初识Go语言</h3><pre><code><span class="keyword">package</span> main<span class="comment">//当前程序的包</span>
+<span class="keyword">import</span> <span class="string">"fmt"</span><span class="comment">//导入其他包</span>
+<span class="keyword">const</span> PI=<span class="number">3.14</span> <span class="comment">//定义常量</span>
+<span class="keyword">var</span> name=<span class="string">"gopher"</span><span class="comment">//全局变量的声明与赋值</span>
+<span class="keyword">type</span> newType <span class="typename">int</span><span class="comment">//一般类型声明</span>
+<span class="keyword">type</span> gopher <span class="keyword">struct</span>{}<span class="comment">//结构的声明</span>
+<span class="keyword">type</span> golang <span class="keyword">interface</span>{}<span class="comment">//接口声明</span>
+<span class="keyword">func</span> main(){
+  fmt.Println(<span class="string">"Hello Go"</span>)<span class="comment">//由main()函数作为程序入口</span>
+}
+</code></pre><p>包的调用还有另外两种形式：（注意两者不可同时使用）</p>
+<p>别名调用：</p>
+<pre><code>import std <span class="string">"fmt"</span>
+std.<span class="function"><span class="title">Println</span><span class="params">(<span class="string">"hello"</span>)</span></span>
+</code></pre><p>省略调用：(不建议使用)</p>
+<pre><code>import . <span class="string">"fmt"</span>
+<span class="function"><span class="title">Println</span><span class="params">(<span class="string">"hello"</span>)</span></span>
+</code></pre><p><strong>Go语言的可见性规则：使用大小写来决定该变量，常量，类型，接口，结构或者方法函数是否可以被外部包所调用。根据约定，函数名首字母小写即为private，大写即为public。Go语言中没有private和public关键字。<br>注意包导入却没有使用会报错（这点很不同与Java,所以不要乱导包，建议用到一个导一个）</strong></p>
+<h3 id="Go的基本数据类型与声明">Go的基本数据类型与声明</h3><ul>
+<li>布尔型：bool 1个字节  （true，false） 不能用0，1代替</li>
+<li>整型：int/uint  根据平台为32位或64位 int8/uint8 1字节  （-128~127/0~255）</li>
+<li>字节型：byte（uint8别名）   int32别名rune</li>
+<li>浮点型：float32/float64  4/8字节  7/15位小数  无double类型</li>
+<li>足够保存指针的32位或64位整型 uintptr</li>
+</ul>
+<p>类型零值，并不等于空值，是默认值（bool：false，string：” “,arry:[]）</p>
+<p>声明： var &lt;变量名称&gt; &lt;变量类型&gt;   var a int  这个与java中定义存在很多不同。</p>
+<p>赋值：&lt;变量名称&gt;=&lt;表达式&gt; a=123</p>
+<p>声明同时赋值：①var&lt;变量名称&gt;[变量类型]=&lt;表达式&gt;<br>②&lt;变量名称&gt;：=&lt;表达式&gt;  a:=123 （全局变量不能使用这种模式）</p>
+<p>Go中不存在隐式转换，转换只能发生在两种互相兼容的类型之间</p>
+<p>string&lt;————-&gt;int  转换问题</p>
+<pre><code><span class="tag">var</span> <span class="tag">a</span> int=<span class="number">65</span>                        <span class="tag">var</span> <span class="tag">a</span> int=<span class="number">65</span>
+<span class="tag">b</span>:=<span class="function"><span class="title">string</span><span class="params">(a)</span></span>   &lt;-引入包<span class="string">"strConv"</span>-&gt;   <span class="tag">b</span>:=strConv.<span class="function"><span class="title">Itoa</span><span class="params">(a)</span></span>
+fmt.<span class="function"><span class="title">Println</span><span class="params">(b)</span></span>                      fmt.<span class="function"><span class="title">Println</span><span class="params">(b)</span></span>  
+输出：A                              输出：<span class="number">65</span>
+</code></pre><p>常量在编译时就已经确定了，表达式中的函数必须是内置函数。</p>
+<p>iota是一个常量计数器，从0开始，组中每定义一个常量就自动递增1，每遇到一个const,iota就会被置零。</p>
+<p>运用iota和&lt;&lt;结合枚举计算机存储单位</p>
+<pre><code>const<span class="list">(
+    <span class="keyword">B</span> float64=1&lt;&lt;<span class="list">(<span class="keyword">iota*10</span>)</span>
+       KB
+    GB
+    TB
+)</span>
+</code></pre><h3 id="循环">循环</h3><p>Go中只有for一种循环方式，支持3种结构形式,{左括号不能放到下一行，if 的条件表达式不能有括号</p>
+<pre><code><span class="literal">a</span>:=<span class="number">1</span>            <span class="literal">a</span>:=<span class="number">1</span>              <span class="literal">a</span>:=<span class="number">1</span>
+for{            for <span class="literal">a</span>&lt;=<span class="number">3</span>{        for i:=<span class="number">0</span><span class="comment">;i&lt;3;i++{</span>
+  <span class="literal">a</span>++             <span class="literal">a</span>++              <span class="literal">a</span>++
+  <span class="keyword">if</span> <span class="literal">a</span>&gt;<span class="number">3</span>{        }                }
+  <span class="keyword">break</span>
+  }
+}
+</code></pre><h3 id="数组Array">数组Array</h3><p>定义：<code>var &lt;varName&gt;[n]&lt;type&gt;</code> </p>
+<p>①var a[2] int   </p>
+<p>②a:=[2]int{1,1}</p>
+<p>③a:=[20]int{19:1} 前19个为0，第二十个为1</p>
+<p>④a:=[…]int{1,2,3,4}</p>
+<p><strong>区分指向数组的指针和指针数组</strong></p>
+<p>区分指向数组的指针：var p*[100]int=&amp;a</p>
+<p>指针数组：a:=[…]*int{&amp;x,&amp;y}</p>
+<p>数组在Go中是值类型，用new创建数组返回一个指向数组的指针p:=new([10]int),p为指针，p[1]=2</p>
+<h3 id="切片Slice_并不是数组，指向低层数组">切片Slice 并不是数组，指向低层数组</h3><p>var s1 []int 或 s1:=make([]int,3,10),3代表容量，10代表内存容量最大为10，若不够则会变成两倍（20）</p>
+<p>len(s1)—-内容个数</p>
+<p>cap(s1)—-最大容量，这是一种高效率的模式</p>
+<p>Reslice:索引以被slice切片为准，不可超过slice切片的容量，索引不可越界</p>
+<p>append：在slice切片尾部追加元素，可以将slice追加在另一个slice后</p>
+<p>copy(s2[2:4],s1[1,3]):将s1[1],s1[2]复制到s2[2],s2[3]</p>
+<p>var s1 []int={1,2,3,4}这种写法是错误的</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Golang/">Golang</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Golang/">Golang</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2015/08/06/Go语言基础入门（1）/" data-title="Go语言基础入门（1） | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/07/31/正则表达式/"  title="正则表达式">
+ <strong>NEXT:</strong><br/> 
+ <span>正则表达式
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2015/08/06/Go语言基础入门（1）/" data-title="Go语言基础入门（1）" data-url="http://wuyishch.github.io/2015/08/06/Go语言基础入门（1）/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2015/08/06/Go语言基础入门（1）/" data-title="Go语言基础入门（1）" data-url="http://wuyishch.github.io/2015/08/06/Go语言基础入门（1）/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Go语言"><span class="toc-number">1.</span> <span class="toc-text">什么是Go语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建Go语言开发环境（Sublime_Text2+GoSublime+Gocode(自动代码提示)）"><span class="toc-number">2.</span> <span class="toc-text">搭建Go语言开发环境（Sublime Text2+GoSublime+Gocode(自动代码提示)）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Go"><span class="toc-number">2.1.</span> <span class="toc-text">安装Go</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Sublime_Text_2配置GoSublime/GoGDB"><span class="toc-number">2.2.</span> <span class="toc-text">安装Sublime Text 2配置GoSublime/GoGDB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装gocode，提供代码补全功能"><span class="toc-number">2.3.</span> <span class="toc-text">安装gocode，提供代码补全功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go语言基础"><span class="toc-number">3.</span> <span class="toc-text">Go语言基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello_Go——-初识Go语言"><span class="toc-number">3.1.</span> <span class="toc-text">Hello Go——-初识Go语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go的基本数据类型与声明"><span class="toc-number">3.2.</span> <span class="toc-text">Go的基本数据类型与声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#循环"><span class="toc-number">3.3.</span> <span class="toc-text">循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组Array"><span class="toc-number">3.4.</span> <span class="toc-text">数组Array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#切片Slice_并不是数组，指向低层数组"><span class="toc-number">3.5.</span> <span class="toc-text">切片Slice 并不是数组，指向低层数组</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/项目管理/" title="项目管理">项目管理<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Golang/" title="Golang">Golang<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>2</sup></a></li>
+		
+			<li><a href="/tags/java，正则表达式/" title="java，正则表达式">java，正则表达式<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven，java/" title="maven，java">maven，java<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">6</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
