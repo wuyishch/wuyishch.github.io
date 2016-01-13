@@ -1,0 +1,467 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>SpringIOC源码分析 | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="Spring项目可以说是目前应用的比较广泛的一项开源项目。大多数的开发者应该都用过spring，spring中有两个很重要的概念就是IOC和AOP，今天我们就通过spring源码来分析一下SpringIOC的工作机制。
+IOC简介IoC是Inversion of Control的缩写，被翻译成控制反">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="SpringIOC源码分析 | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/01/13/SpringIOC源码分析/" title="SpringIOC源码分析" itemprop="url">SpringIOC源码分析</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-13T06:36:38.125Z" itemprop="datePublished">2016-01-13</time>
+    更新日期:<time datetime="2016-01-13T06:36:00.338Z" itemprop="dateModified">2016-01-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC简介"><span class="toc-number">1.</span> <span class="toc-text">IOC简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring_IOC体系结构"><span class="toc-number">2.</span> <span class="toc-text">Spring IOC体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BeanFactory"><span class="toc-number">2.1.</span> <span class="toc-text">BeanFactory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BeanDefinition"><span class="toc-number">2.2.</span> <span class="toc-text">BeanDefinition</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC容器的依赖注入"><span class="toc-number">3.</span> <span class="toc-text">IOC容器的依赖注入</span></a></li></ol>
+		</div>
+		
+		<p>Spring项目可以说是目前应用的比较广泛的一项开源项目。大多数的开发者应该都用过spring，spring中有两个很重要的概念就是IOC和AOP，今天我们就通过spring源码来分析一下SpringIOC的工作机制。</p>
+<h2 id="IOC简介">IOC简介</h2><p>IoC是Inversion of Control的缩写，被翻译成控制反转。控制反转是Spring框架的核心。其原理是基于面向对象(OO)设计 原则的The Hollywood Principle：Don’t call us, we’ll call you（别找我，我会来找你的）。也就是说，所有的组件都 是被动的，所有的组件初始化和调用都由容器负责。组件处在一个容器当中，由容器负责管理。简单的来讲，就是由容器控制程序之间的关系，而非传统实现中，由程序代码直接操控，即在一个类中调用另外一个类。这也就是所谓“控制反转”的概念所在：控制权由应用代码中转到了外部容器，控制权的转移，即所谓反转。</p>
+<h2 id="Spring_IOC体系结构">Spring IOC体系结构</h2><h3 id="BeanFactory">BeanFactory</h3><p>Spring Bean的创建是典型的工厂模式，这一系列的Bean工厂，也即IOC容器为开发者管理对象间的依赖关系提供了很多便利和基础服务，在Spring中有许多的IOC容器的实现供用户选择和使用，其相互关系如下：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/IOC.png" alt="beanfactory"></p>
+<p>其中BeanFactory作为最顶层的一个接口类，它定义了IOC容器的基本功能规范，BeanFactory 有三个子类：ListableBeanFactory、HierarchicalBeanFactory 和AutowireCapableBeanFactory。但是从上图中我们可以发现最终的默认实现类是 DefaultListableBeanFactory，他实现了所有的接口。那为何要定义这么多层次的接口呢？查阅这些接口的源码和说明发现，每个接口都有他使用的场合，它主要是为了区分在 Spring 内部在操作过程中对象的传递和转化过程中，对对象的数据访问所做的限制。例如 ListableBeanFactory 接口表示这些 Bean 是可列表的，而 HierarchicalBeanFactory 表示的是这些 Bean 是有继承关系的，也就是每个Bean 有可能有父 Bean。AutowireCapableBeanFactory 接口定义 Bean 的自动装配规则。这四个接口共同定义了 Bean 的集合、Bean 之间的关系、以及 Bean 行为。</p>
+<h3 id="BeanDefinition">BeanDefinition</h3><p>SpringIOC容器管理了我们定义的各种Bean对象及其相互的关系，Bean对象在Spring实现中是以BeanDefinition来描述的，其继承体系如下：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/beanDefinition.png" alt="BeanDefinition"></p>
+<p>Bean 的解析过程非常复杂，功能被分的很细，因为这里需要被扩展的地方很多，必须保证有足够的灵活性，以应对可能的变化。Bean 的解析主要就是对 Spring 配置文件的解析。这个解析过程主要通过下图中的类完成：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/bean%E8%A7%A3%E6%9E%90.png" alt="bean解析"></p>
+<h2 id="IOC容器的依赖注入">IOC容器的依赖注入</h2><p>Spring中，依赖注入是在用户第一次向IOC容器索要Bean时触发的（通过getBean方法）。首先要得到BeanFactory通过getBeanFactory()方法。<br><img src="http://7xko05.com1.z0.glb.clouddn.com/1.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/2.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/3.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/4.png" alt=""></p>
+<p>然后调用getBean方法<br><img src="http://7xko05.com1.z0.glb.clouddn.com/5.png" alt=""><br>在BeanFactory中我们看到getBean（String…）函数，它的具体实现在AbstractBeanFactory中：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/6.png" alt=""></p>
+<p>可以看到具体的注入过程转移到doGetBean（String…）中，在这个方法中，首先获取到Bean的名称（name）:<br><img src="http://7xko05.com1.z0.glb.clouddn.com/7.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/8.png" alt=""><br>主要的操作都是在BeanFactoryUtils这个工具类中完成。<br>然后它会根据beanName从缓存中取，<br><img src="http://7xko05.com1.z0.glb.clouddn.com/9.png" alt=""></p>
+<p>分支1：如果单例模式的bean已经被创建，则这种bean请求不需要重复的创建，调用:<br><img src="http://7xko05.com1.z0.glb.clouddn.com/10.png" alt=""></p>
+<p>跟踪进入getObjectForBeanInstance（…,null）,<br><img src="http://7xko05.com1.z0.glb.clouddn.com/11.png" alt=""></p>
+<p>可以知道因为最后的RootBeanDefinition参数是null，所以执行的是：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/12.png" alt=""></p>
+<p>而getCachedObjectForFactoryBean(beanName)中实现，其实现很简单，就是在缓存的bean map中查找bean返回。<br><img src="http://7xko05.com1.z0.glb.clouddn.com/13.png" alt=""></p>
+<p>获取到bean之后，让我们继续回到doGetBean（String…）方法中：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/14.png" alt=""><br>然后返回从spring IOC容器中获取到的bean。</p>
+<p>分支2：缓存中没有正在创建的单态模式Bean，则执行以下分支：<br>缓存中已经有已经创建的原型模式Bean，但是由于循环引用的问题导致实例化对象失败。<br><img src="http://7xko05.com1.z0.glb.clouddn.com/15.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/16.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/17.png" alt=""></p>
+<p>然后，对IoC容器中是否存在指定名称的BeanDefinition进行检查，首先检查是否能在当前的BeanFactory中获取的所需要的Bean，如果不能则委托当前容器的父级容器去查找，如果还是找不到则沿着容器的继承体系向父级容器查找：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/18.png" alt=""><br>然后判断创建的Bean是否需要进行类型验证，一般不需要：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/19.png" alt=""><br>接下来，根据指定Bean名称获取其父级的Bean定义，主要解决Bean继承时子类合并父类公共属性问题：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/20.png" alt=""><br>取当前bean的所有依赖bean，这样就会触发getBean的递归调用，直至取到一个没有任何依赖的bean为止：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/21.png" alt=""><br>通过调用createBean来，创建单例bean的实例：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/22.png" alt=""><br>现在让我们继续看createBean（…），可以看到在AbstractBeanFactory中它只是个抽象类<br><img src="http://7xko05.com1.z0.glb.clouddn.com/23.png" alt=""></p>
+<p>具体的实现交给其子类（又见模板模式），进入子类AbstractAutowireCapableBeanFactory中看createBean的具体实现：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/24.png" alt=""></p>
+<p>其具体的实现转到doCreateBean（String…）,这个是真正创建bean的方法。这里我们看到与依赖注入关系比较密切的方法有createBeanInstance（创建实例对象）和populateBean（初始化对象，依赖注入）。<br><img src="http://7xko05.com1.z0.glb.clouddn.com/25.png" alt=""></p>
+<p>现在让我们进入到createBeanInstance()中进一步分析实例对象创建的过程：<br>在createBeanInstance中生成了Bean所包含的Java对象，这个对象的生成有很多不同的方式，可以通过工厂方法生成，也可以通过容器的autowire特性生成，生成的方式由相关联的BeanDefinition来指定。<br>通过工厂方式实例化：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/26.png" alt=""></p>
+<p>通过使用容器的自动装配进行实例化：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/27.png" alt=""></p>
+<p>通过使用bean的构造函数实例化：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/28.png" alt=""></p>
+<p>使用默认无参构造函数实例化：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/29.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/30.png" alt=""></p>
+<p>因为getInstantiationStrategy()返回的默认的实例化策略，而默认的实例化策略是CglibSubclassingInstantiationStrategy，也即用cglib来对bean进行实例化。CGLIB是一个常用的字节码生成器的类库，它提供了一系列的API来提供Java的字节码生成和转换功能。</p>
+<p>然后获取实例化对象的类型，调用PostProcessor后置处理器，向容器中缓存单态模式的Bean对象，以防循环引用等操作：</p>
+<p><img src="http://7xko05.com1.z0.glb.clouddn.com/31.png" alt=""></p>
+<p>接下来对bean对象进行初始化，依赖注入在此触发。<br>定义一个exposedObject对象在初始化完成之后返回作为依赖注入完成后的Bean。</p>
+<p><img src="http://7xko05.com1.z0.glb.clouddn.com/32.png" alt=""></p>
+<p>接下来让我们进入到populateBean()中分析对bean属性进行依赖注入的具体处理：<br>在populateBean()中，先是取得在BeanDefinition中设置的property值，这些property来自对BeanDefinition的解析，接着便开始进行依赖注入过程：<br>首先处理autowire自动装配的注入（根据bean名称，bean类型进行自动装配注入）<br><img src="http://7xko05.com1.z0.glb.clouddn.com/33.png" alt=""></p>
+<p>最后在通过applyPropertyValues对属性进行注入：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/34.png" alt=""></p>
+<p>接着我们到applyPropertyValues中去看具体的对属性进行解析然后注入的过程，在其中会调用BeanDefinitionValueResolver对BeanDefinition进行解析：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/35.png" alt=""></p>
+<p>接着为解析值创建一个拷贝，拷贝的数据将会被注入到bean中，它会先对PropertyValue判断，如果其没有经过转换则会调用resolveValueIfNecessary进行解析，然后注入到property中。<br><img src="http://7xko05.com1.z0.glb.clouddn.com/36.png" alt=""></p>
+<p>最后进行属性依赖注入: bw.setPropertyValues(new MutablePropertyValues(deepCopy));<br><img src="http://7xko05.com1.z0.glb.clouddn.com/37.png" alt=""></p>
+<p>下面到BeanDefinitionValueResolver中去看一下解析过程的实现，对属性进行解析的由resolveValueIfNecessary方法实现。在函数resolveValueIfNecessary中包含了所有对注入类型的处理，以RuntimeBeanReference（其是在对BeanDefinition进行解析时生成的数据对象）为例：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/38.png" alt=""><br><img src="http://7xko05.com1.z0.glb.clouddn.com/39.png" alt=""></p>
+<p>这就完成了resolve的过程，为依赖注入准备好了条件。<br>我们可以看出，对属性的注入过程分以下两种情况：<br>(1).属性值类型不需要转换时，不需要解析属性值，直接准备进行依赖注入。<br>(2).属性值需要进行类型转换时，如对其他对象的引用等，首先需要解析属性值，然后对解析后的属性值进行依赖注入。<br>对属性值的解析是在BeanDefinitionValueResolver类中的resolveValueIfNecessary方法中进行的，对属性值的依赖注入是通过bw.setPropertyValues方法实现的，在分析属性值的依赖注入之前，我们先分析一下对属性值的解析过程。<br>在doCreateBean中执行完populateBean，完成Bean的生成和依赖注入以后，开始对Bean进行初始化，这个初始化过程包含了对后置处理器的postProcessBeforeInitializtion回调，具体实现在initializeBean方法中：<br><img src="http://7xko05.com1.z0.glb.clouddn.com/40.png" alt=""></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/spring/">spring</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2016/01/13/SpringIOC源码分析/" data-title="SpringIOC源码分析 | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/08/08/Go语言基础入门（2）/"  title="Go语言基础入门（2）">
+ <strong>NEXT:</strong><br/> 
+ <span>Go语言基础入门（2）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2016/01/13/SpringIOC源码分析/" data-title="SpringIOC源码分析" data-url="http://wuyishch.github.io/2016/01/13/SpringIOC源码分析/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2016/01/13/SpringIOC源码分析/" data-title="SpringIOC源码分析" data-url="http://wuyishch.github.io/2016/01/13/SpringIOC源码分析/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC简介"><span class="toc-number">1.</span> <span class="toc-text">IOC简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring_IOC体系结构"><span class="toc-number">2.</span> <span class="toc-text">Spring IOC体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BeanFactory"><span class="toc-number">2.1.</span> <span class="toc-text">BeanFactory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BeanDefinition"><span class="toc-number">2.2.</span> <span class="toc-text">BeanDefinition</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IOC容器的依赖注入"><span class="toc-number">3.</span> <span class="toc-text">IOC容器的依赖注入</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/Cloud-Foundry/" title="Cloud Foundry">Cloud Foundry<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>2</sup></a></li>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>4</sup></a></li>
+		
+			<li><a href="/categories/项目管理/" title="项目管理">项目管理<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Golang/" title="Golang">Golang<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cloudfoundry/" title="cloudfoundry">cloudfoundry<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/java，正则表达式/" title="java，正则表达式">java，正则表达式<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven，java/" title="maven，java">maven，java<sup>2</sup></a></li>
+		
+			<li><a href="/tags/nise-bosh/" title="nise_bosh">nise_bosh<sup>1</sup></a></li>
+		
+			<li><a href="/tags/spring/" title="spring">spring<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">6</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
