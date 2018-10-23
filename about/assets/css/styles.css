@@ -18,11 +18,7 @@ h6 {
   font-weight: 700;
   color: #778492;
 }
-ul {
-  list-style: none;
-}
 a {
-  text-decoration: none;
   color: #3aaa64;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
@@ -30,7 +26,7 @@ a {
   -o-transition: all 0.4s ease-in-out;
 }
 a:hover {
-  text-decoration: none;
+  text-decoration: underline;
   color: #5f6b77;
   color: #2d844e;
 }
@@ -99,7 +95,6 @@ a.dotted-link:hover {
   color: #49515a;
 }
 
-
 .copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
 
 /*
@@ -118,8 +113,8 @@ iframe {
 /* ======= Header ======= */
 .header {
   padding: 30px 0;
-  background:#ea6753;
-  /*background: #f5f5f5;*/
+  background: #f5f5f5;
+  border-top: 10px solid #778492;
 }
 .header .btn {
   margin-top: 60px;
@@ -462,84 +457,6 @@ iframe {
 .blog .item:last-child {
   margin-bottom: 0;
 }
-
-header nav {
-  float: left;
-  width: 100%;
-  font-size: 112.5%;
-  padding-top: 0.5em;
-  max-height: 0.01em;
-  -webkit-transition: max-height 1s ease-out;
-  -moz-transition: max-height 1s ease-out;
-  -o-transition: max-height 1s ease-out;
-  -ms-transition: max-height 1s ease-out;
-  transition: max-height 1s ease-out;
-}
-@media only screen and (min-width: 568px) {
-  header nav {
-    width: 50%;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  header nav {
-    float: right;
-    width: auto;
-    margin-top: 1em;
-    max-height: none;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  header nav ul {
-    float: right;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  header nav ul li {
-    float: left;
-  }
-}
-header nav ul li a {
-  padding: 0.2em 0 0.2em 1em;
-}
-@media only screen and (min-width: 1024px) {
-  header nav ul li a {
-    padding: 0.2em 1.5em;
-  }
-}
-header nav ul li a:hover {
-  background: #dd2c11;
-  color: #e9cd4c;
-}
-.shownav {
-  max-height: 40em;
-}
-.search {
-  padding: 0.1em 0 0 1em;
-}
-.search input {
-  line-height: 1.7;
-  border: 1px solid #fff;
-  color: #fff;
-  background: transparent;
-  width: 80%;
-  padding-left: 0.5em;
-}
-@media only screen and (min-width: 1024px) {
-  .search input {
-    width: 8em;
-    -webkit-transition: 0.5s width;
-    -moz-transition: 0.5s width;
-    -o-transition: 0.5s width;
-    -ms-transition: 0.5s width;
-    transition: 0.5s width;
-  }
-  .search input:focus {
-    width: 15em;
-  }
-}
-.search label {
-  display: none;
-}
 /* List section */
 .list ul li {
   margin-bottom: 10px;
@@ -607,19 +524,6 @@ header nav ul li a:hover {
     margin-bottom: 15px;
   }
 }
-/* css3 animate */
-.animated {
-  -webkit-animation-fill-mode: both;
-  -moz-animation-fill-mode: both;
-  -o-animation-fill-mode: both;
-  -ms-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  -o-animation-duration: 1s;
-  -ms-animation-duration: 1s;
-  animation-duration: 1s;
-}
 /* Small devices (tablets, 768px and up) */
 /* Medium devices (desktops, 992px and up) */
 /* Large devices (large desktops, 1200px and up) */
@@ -628,91 +532,4 @@ header nav ul li a:hover {
   .container {
     width: 1360px;
   }
-}
-
-#imglogo {
-  float: left;
-  width: 4em;
-  height: 4em;
-}
-@media only screen and (min-width: 768px) {
-  #imglogo {
-    width: 5em;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  #imglogo {
-    width: 5.5em;
-  }
-}
-#imglogo img {
-  width: 4em;
-}
-@media only screen and (min-width: 768px) {
-  #imglogo img {
-    width: 5em;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  #imglogo img {
-    width: 5.5em;
-  }
-}
-#textlogo {
-  float: left;
-  width: 75%;
-  margin-left: 0.5em;
-}
-#textlogo h1.site-name {
-  width: 86%;
-  font-family: "covered_by_your_graceregular";
-  font-size: 200%;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-@media only screen and (min-width: 768px) {
-  #textlogo h1.site-name {
-    font-size: 240%;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  #textlogo h1.site-name {
-    font-size: 280%;
-  }
-}
-#textlogo h2.blog-motto {
-  font-size: 0.7em;
-  font-weight: normal;
-}
-@media only screen and (min-width: 768px) {
-  #textlogo h2.blog-motto {
-    font-size: 100%;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  #textlogo h2.blog-motto {
-    font-size: 110%;
-  }
-}
-.navbar {
-  position: absolute;
-  width: 2em;
-  right: 0em;
-  top: 1em;
-  padding: 0.5em;
-}
-@media only screen and (min-width: 1024px) {
-  .navbar {
-    display: none;
-  }
-}
-.navbutton::before {
-  font-family: "FontAwesome";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f0c9";
-}
-.navmobile::before {
-  padding-left: 1em;
 }

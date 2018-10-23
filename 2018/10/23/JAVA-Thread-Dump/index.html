@@ -1,0 +1,611 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JAVA Thread Dump | 寿晨的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="寿晨">
+    
+    <meta name="description" content="什么是 Thread DumpThread Dump 是非常有用的诊断 Java 应用问题的工具，每一个 Java虚拟机都有及时生成显示所有线程在某一点状态的 thread-dump 的能力。虽然各个 Java虚拟机thread dump 打印输出格式上略微有一些不同，但是 Thread dumps">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="wuyishch" />
+    <meta name="twitter:title" content="JAVA Thread Dump | 寿晨的博客" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="寿晨的博客" title="寿晨的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="寿晨的博客">寿晨的博客</a></h1>
+				<h2 class="blog-motto">时光，既能让人爱到荼蘼，恨到惊心，也能让人不悲不喜，波澜不惊。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">博文</a></li>
+					
+						<li><a href="/photos">相册</a></li>
+					
+						<li><a href="/about/index.html">关于</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wuyishch.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/10/23/JAVA-Thread-Dump/" title="JAVA Thread Dump" itemprop="url">JAVA Thread Dump</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://wuyishch.github.io" title="寿晨">寿晨</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2018-10-23T13:31:14.905Z" itemprop="datePublished">2018-10-23</time>
+    更新日期:<time datetime="2018-10-23T13:31:14.905Z" itemprop="dateModified">2018-10-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是_Thread_Dump"><span class="toc-number">1.</span> <span class="toc-text">什么是 Thread Dump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread_Dump_的特点"><span class="toc-number">2.</span> <span class="toc-text">Thread Dump 的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread_Dump_能诊断的问题"><span class="toc-number">3.</span> <span class="toc-text">Thread Dump 能诊断的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取_Thread_Dump"><span class="toc-number">4.</span> <span class="toc-text">获取 Thread Dump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jstack_Dump_日志文件中的线程状态"><span class="toc-number">5.</span> <span class="toc-text">jstack Dump 日志文件中的线程状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread_Dump_信息"><span class="toc-number">6.</span> <span class="toc-text">Thread Dump 信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#案例分析"><span class="toc-number">7.</span> <span class="toc-text">案例分析</span></a></li></ol>
+		</div>
+		
+		<h2 id="什么是_Thread_Dump">什么是 Thread Dump</h2><p>Thread Dump 是非常有用的诊断 Java 应用问题的工具，每一个 Java虚拟机都有及时生成显示所有线程在某一点状态的 thread-dump 的能力。虽然各个 Java虚拟机thread dump 打印输出格式上略微有一些不同，但是 Thread dumps 出来的信息包含线程；线程的运行状态、标识和调用的堆栈；调用的堆栈包含完整的类名，所执行的方法，如果可能的话还有源代码的行数。</p>
+<h2 id="Thread_Dump_的特点">Thread Dump 的特点</h2><ul>
+<li>能在各种操作系统下使用</li>
+</ul>
+<ul>
+<li>能在各种 Java 应用服务器下使用</li>
+</ul>
+<ul>
+<li>可以在生产环境下使用而不影响系统的性能</li>
+</ul>
+<ul>
+<li>可以将问题直接定位到应用程序的代码行上</li>
+</ul>
+<h2 id="Thread_Dump_能诊断的问题">Thread Dump 能诊断的问题</h2><ul>
+<li>查找内存泄露，常见的是程序里 load 大量的数据到缓存；</li>
+</ul>
+<ul>
+<li>发现死锁线程；</li>
+</ul>
+<h2 id="获取_Thread_Dump">获取 Thread Dump</h2><ol>
+<li><p>在 Java 程序的运行会话中，使用下面方式：</p>
+<blockquote>
+<p>  Unix/Linux：CTRL-\</p>
+<p>  Windows：CTRL-BREAK</p>
+</blockquote>
+</li>
+</ol>
+<ol>
+<li><p>首先查找到服务器的进程号 (process id), 然后获取线程堆栈.</p>
+<ol>
+<li>ps –ef  | grep java</li>
+<li><p>kill -3 <pid></pid></p>
+<p>注意：一定要谨慎, 一步不慎就可能让服务器进程被杀死。kill -9 命令会杀死进程。</p>
+</li>
+</ol>
+</li>
+<li><p>JVM 自带的工具获取线程堆栈:JDK 自带命令行工具获取 PID，再获取 ThreadDump:</p>
+<blockquote>
+<ol>
+<li>jps 或 ps –ef|grepjava (获取 PID)</li>
+<li>jstack [-l]&lt;pid| tee -a jstack.log  (获取 ThreadDump)</li>
+</ol>
+</blockquote>
+</li>
+<li><p>通过写 Java 程序获取了，提示一点，可以使用 JMX 来完成。<br>java.lang 域下有一个 Threading#dumpAllThreads(boolean, boolean) 方法，通过这个方法就可以直接拿到 ThreadDump 信息。</p>
+</li>
+<li><p>也可以使用 jconsole、jvisualvm、jprofile 来获取 ThreadDump 以及 HeapDump，并加以分析。当然了，如果你是一个 Java Developer，你也可以使用 Eclipse 提供的 Memory Analyzer Tool （MAT ）来替代这些工具。</p>
+</li>
+</ol>
+<h2 id="jstack_Dump_日志文件中的线程状态">jstack Dump 日志文件中的线程状态</h2><ul>
+<li>死锁，Deadlock（重点关注） </li>
+<li>执行中，Runnable   </li>
+<li>等待资源，Waiting on condition（重点关注） </li>
+<li>等待获取监视器，Waiting on monitor entry（重点关注）</li>
+<li>暂停，Suspended</li>
+<li>对象等待中，Object.wait() 或 TIMED_WAITING</li>
+<li>阻塞，Blocked（重点关注）  </li>
+<li>停止，Parked</li>
+</ul>
+<p>含义如下所示：</p>
+<ul>
+<li>Deadlock：死锁线程，一般指多个线程调用间，进入相互资源占用，导致一直等待无法释放的情况。</li>
+<li>Runnable：一般指该线程正在执行状态中，该线程占用了资源，正在处理某个请求，有可能正在传递SQL到数据库执行，有可能在对某个文件操作，有可能进行数据类型等转换。</li>
+<li>Waiting on condition：等待资源，或等待某个条件的发生。具体原因需结合 stacktrace 来分析。</li>
+<li>如果堆栈信息明确是应用代码，则证明该线程正在等待资源。一般是大量读取某资源，且该资源采用了资源锁的情况下，线程进入等待状态，等待资源的读取。</li>
+<li>又或者，正在等待其他线程的执行等。</li>
+<li>如果发现有大量的线程都在处在 Wait on condition，从线程 stack 看，正等待网络读写，这可能是一个网络瓶颈的征兆。因为网络阻塞导致线程无法执行。</li>
+<li>一种情况是网络非常忙，几乎消耗了所有的带宽，仍然有大量数据等待网络读写；</li>
+<li>另一种情况也可能是网络空闲，但由于路由等问题，导致包无法正常的到达。</li>
+<li>另外一种出现 Wait on condition 的常见情况是该线程在 sleep，等待 sleep 的时间到了时候，将被唤醒。</li>
+<li>Blocked：线程阻塞，是指当前线程执行过程中，所需要的资源长时间等待却一直未能获取到，被容器的线程管理器标识为阻塞状态，可以理解为等待资源超时的线程。</li>
+<li>Waiting for monitor entry 和 in Object.wait()：Monitor 是 Java 中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class 的锁。每一个对象都有，也仅有一个 monitor。从下图 1 中可以看出，每个 Monitor 在某个时刻，只能被一个线程拥有，该线程就是 “Active Thread”，而其它线程都是 “Waiting Thread”，分别在两个队列 “ Entry Set”和 “Wait Set”里面等候。在 “Entry Set”中等待的线程状态是 “Waiting for monitor entry”，而在 “Wait Set”中等待的线程状态是 “in Object.wait()”。</li>
+</ul>
+<h2 id="Thread_Dump_信息">Thread Dump 信息</h2><ul>
+<li><p>头部信息：2016-09-10 19:05:06<br>Full thread dump Java HotSpot(TM) Server VM (16.3-b01 mixed mode):</p>
+<ul>
+<li>时间</li>
+</ul>
+</li>
+</ul>
+<pre><code><span class="bullet">- </span>jvm 信息
+</code></pre><ul>
+<li><p>线程 info信息块：”Timer-0” daemon prio=10tid=0xac190c00 nid=0xaef in Object.wait()[0xae77d000]<br>java.lang.Thread.State: TIMED_WAITING (on object monitor)<br>atjava.lang.Object.wait(Native Method)<br>-waiting on <0xb3885f60> (a java.util.TaskQueue) ### 继续 wait<br>atjava.util.TimerThread.mainLoop(Timer.java:509)<br>-locked <0xb3885f60> (a java.util.TaskQueue) ### 已经 locked<br>atjava.util.TimerThread.run(Timer.java:462)</0xb3885f60></0xb3885f60></p>
+<ul>
+<li>线程名称：Timer-0</li>
+<li>线程类型：daemon</li>
+<li>优先级: 10，默认是 5</li>
+<li>jvm 线程 id：tid=0xac190c00，jvm 内部线程的唯一标识（通过 java.lang.Thread.getId() 获取，通常用自增方式实现。）</li>
+<li>对应系统线程 id（NativeThread ID）：nid=0xaef，和 top 命令查看的线程 pid 对应，不过一个是 10 进制，一个是 16 进制。（通过命令：top -H -p pid，可以查看该进程的所有线程信息）</li>
+<li>线程状态：in Object.wait().</li>
+<li>起始栈地址：[0xae77d000]</li>
+<li>Java thread statck trace：是上面 2-7 行的信息。到目前为止这是最重要的数据，Java stack trace 提供了大部分信息来精确定位问题根源。</li>
+</ul>
+</li>
+</ul>
+<h2 id="案例分析">案例分析</h2><p>实例如下：</p>
+<p>“RMI TCP Connection(267865)-172.16.5.25” daemon prio=10 tid=0x00007fd508371000 nid=0x55ae waiting for monitor entry [0x00007fd4f8684000]<br>   java.lang.Thread.State: BLOCKED (on object monitor)<br>at org.apache.log4j.Category.callAppenders(Category.java:201)</p>
+<ul>
+<li>waiting to lock <0x00000000acf4d0c0> (a org.apache.log4j.Logger)<br>at org.apache.log4j.Category.forcedLog(Category.java:388)<br>at org.apache.log4j.Category.log(Category.java:853)<br>at org.apache.commons.logging.impl.Log4JLogger.warn(Log4JLogger.java:234)<br>at com.tuan.core.common.lang.cache.remote.SpyMemcachedClient.get(SpyMemcachedClient.java:110)<br>……</0x00000000acf4d0c0></li>
+</ul>
+<ol>
+<li>线程状态是  Blocked，阻塞状态。说明线程等待资源超时！</li>
+<li>“  waiting to lock <0x00000000acf4d0c0>”指，线程在等待给这个 0x00000000acf4d0c0 地址上锁（英文可描述为：trying to obtain  0x00000000acf4d0c0 lock）。</0x00000000acf4d0c0></li>
+<li>在 dump 日志里查找字符串 0x00000000acf4d0c0，发现 有大量线程都在等待给这个地址上锁。如果能在日志里找到谁获得了这个锁（如 locked &lt; 0x00000000acf4d0c0 &gt;），就可以顺藤摸瓜了。</li>
+<li>“ waiting for monitor entry”说明此线程通过 synchronized(obj) {……} 申请进入了临界区，从而进入了下图 1 中的“Entry Set”队列，但该 obj 对应的 monitor 被其他线程拥有，所以本线程在 Entry Set 队列中等待。</li>
+<li>第一行里， “RMI TCP Connection(267865)-172.16.5.25”是 Thread Name 。tid 指 Java Thread id。nid 指 native 线程的 id。prio 是线程优先级。 [ 0x00007fd4f8684000 ]是线程栈起始地址。</li>
+</ol>
+<p>死锁：</p>
+<pre><code><span class="comment">/**
+ *产生死锁程序
+ * <span class="doctag">@author</span> naughtior&lt;wuyishch@163.com&gt;
+ * <span class="doctag">@create</span> 2016-09-20 13:04
+ */</span>
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLock</span> </span>{
+    <span class="keyword">private</span> <span class="keyword">static</span> String A=<span class="string">"A"</span>;
+    <span class="keyword">private</span> <span class="keyword">static</span> String B=<span class="string">"B"</span>;
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
+    <span class="keyword">new</span> DeadLock().deadLock();
+}
+
+
+
+<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">deadLock</span><span class="params">()</span></span>{
+    Thread thread1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+        <span class="annotation">@Override</span>
+        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>{
+            <span class="keyword">synchronized</span> (A){
+                <span class="keyword">try</span> {
+                    Thread.currentThread().sleep(<span class="number">2000</span>);
+                } <span class="keyword">catch</span> (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                <span class="keyword">synchronized</span> (B){
+                    System.out.println(<span class="string">"1"</span>);
+                }
+            }
+        }
+    });
+
+    Thread thread2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+        <span class="annotation">@Override</span>
+        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>{
+           <span class="keyword">synchronized</span> (B){
+               <span class="keyword">synchronized</span> (A){
+                   System.out.println(<span class="string">"2"</span>);
+               }
+           }
+        }
+    });
+    thread1.start();
+    thread2.start();
+  }
+}
+</code></pre><p>jstack 输出内容：</p>
+<pre><code>Found one Java-level deadlock:
+=============================
+"Thread-1":
+waiting to <span class="operator"><span class="keyword">lock</span> monitor <span class="number">0x000000000270a248</span> (object <span class="number">0x00000000d5e9fbd8</span>, a java.lang.<span class="keyword">String</span>),
+which <span class="keyword">is</span> held <span class="keyword">by</span> <span class="string">"Thread-0"</span>
+<span class="string">"Thread-0"</span>:
+waiting <span class="keyword">to</span> <span class="keyword">lock</span> monitor <span class="number">0x000000000270b638</span> (object <span class="number">0x00000000d5e9fc08</span>, a java.lang.<span class="keyword">String</span>),
+which <span class="keyword">is</span> held <span class="keyword">by</span> <span class="string">"Thread-1"</span>
+
+Java stack information <span class="keyword">for</span> the threads listed above:
+===================================================
+<span class="string">"Thread-1"</span>:
+<span class="keyword">at</span> DeadLock$<span class="number">2.</span>run(DeadLock.java:<span class="number">37</span>)
+- waiting <span class="keyword">to</span> <span class="keyword">lock</span> &lt;<span class="number">0x00000000d5e9fbd8</span>(a java.lang.<span class="keyword">String</span>)
+- locked &lt;<span class="number">0x00000000d5e9fc08</span>(a java.lang.<span class="keyword">String</span>)
+<span class="keyword">at</span> java.lang.Thread.run(Thread.java:<span class="number">745</span>)
+<span class="string">"Thread-0"</span>:
+<span class="keyword">at</span> DeadLock$<span class="number">1.</span>run(DeadLock.java:<span class="number">26</span>)
+- waiting <span class="keyword">to</span> <span class="keyword">lock</span> &lt;<span class="number">0x00000000d5e9fc08</span>(a java.lang.<span class="keyword">String</span>)
+- locked &lt;<span class="number">0x00000000d5e9fbd8</span>(a java.lang.<span class="keyword">String</span>)
+<span class="keyword">at</span> java.lang.Thread.run(Thread.java:<span class="number">745</span>)
+
+<span class="keyword">Found</span> <span class="number">1</span> deadlock.</span>
+</code></pre><p>从上面的描述可以清楚的知道程序发生了死锁。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://wuyishch.github.io/2018/10/23/JAVA-Thread-Dump/" data-title="JAVA Thread Dump | 寿晨的博客" data-tsina="2806430612" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/01/14/SpringBoot快速构建Spring应用/"  title="Spring Boot--快速构建Spring应用">
+ <strong>NEXT:</strong><br/> 
+ <span>Spring Boot--快速构建Spring应用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<!-- 多说评论框 start 把你默认配置中的修改成 data-thread-key="2018/10/23/JAVA-Thread-Dump/" data-title="JAVA Thread Dump" data-url="http://wuyishch.github.io/2018/10/23/JAVA-Thread-Dump/ 我这句 下面的<script type="text/javascript">...这中间的代码是你从多说中复制出来的每个人的都不同复制自己的就好~ </script>-->	
+	<div class="ds-thread" data-thread-key="2018/10/23/JAVA-Thread-Dump/" data-title="JAVA Thread Dump" data-url="http://wuyishch.github.io/2018/10/23/JAVA-Thread-Dump/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pronouncing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是_Thread_Dump"><span class="toc-number">1.</span> <span class="toc-text">什么是 Thread Dump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread_Dump_的特点"><span class="toc-number">2.</span> <span class="toc-text">Thread Dump 的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread_Dump_能诊断的问题"><span class="toc-number">3.</span> <span class="toc-text">Thread Dump 能诊断的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取_Thread_Dump"><span class="toc-number">4.</span> <span class="toc-text">获取 Thread Dump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jstack_Dump_日志文件中的线程状态"><span class="toc-number">5.</span> <span class="toc-text">jstack Dump 日志文件中的线程状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread_Dump_信息"><span class="toc-number">6.</span> <span class="toc-text">Thread Dump 信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#案例分析"><span class="toc-number">7.</span> <span class="toc-text">案例分析</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/Cloud-Foundry/" title="Cloud Foundry">Cloud Foundry<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Golang/" title="Golang">Golang<sup>2</sup></a></li>
+		
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>6</sup></a></li>
+		
+			<li><a href="/categories/项目管理/" title="项目管理">项目管理<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Golang/" title="Golang">Golang<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cloudfoundry/" title="cloudfoundry">cloudfoundry<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>5</sup></a></li>
+		
+			<li><a href="/tags/java，正则表达式/" title="java，正则表达式">java，正则表达式<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven，java/" title="maven，java">maven，java<sup>2</sup></a></li>
+		
+			<li><a href="/tags/nise-bosh/" title="nise_bosh">nise_bosh<sup>1</sup></a></li>
+		
+			<li><a href="/tags/spring/" title="spring">spring<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.csdn.net/" target="_blank" title="全球最大中文IT社区！">CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.cnblogs.com/wuyishch" target="_blank" title="wuyishch&#39;s Blog">wuyishch&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">6</span></li></ul>
+  </div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2806430612&verifier=539a06fb&dpc=1"></iframe>
+</div>
+
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Beilive it or not, just do it ! <br/>
+			非淡泊无以明志，非宁静无以致远！</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/2806430612" target="_blank" title="weibo"></a>
+		
+		
+		<a href="https://twitter.com/wuyishch" target="_blank" title="twitter"></a>
+		
+		
+		<a href="https://github.com/wuyishch" target="_blank" title="github"></a>
+		
+		
+		<a href="https://www.facebook.com/wuyishch" target="_blank" title="facebook"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2018 
+		
+		<a href="http://wuyishch.github.io" target="_blank" title="寿晨">寿晨</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"wuyishhcgithubio"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+  </body>
+</html>
